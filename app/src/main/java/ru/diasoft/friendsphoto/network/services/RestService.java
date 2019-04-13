@@ -10,5 +10,5 @@ public interface RestService {
 
     @POST("method/friends.getOnline?")
     @FormUrlEncoded
-    Call<FriendsListRes> getMainJson(@Field("v") String version, @Field("access_token") String token);
+    Call<FriendsListRes> getFriendsJson(@Field("v") String version, @Field("access_token") String token);
 }

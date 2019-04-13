@@ -1,17 +1,15 @@
 package ru.diasoft.friendsphoto.ui.fragments;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
-
-import java.util.ArrayList;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,8 +17,7 @@ import retrofit2.Response;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.network.resources.FriendsListRes;
 import ru.diasoft.friendsphoto.network.services.RetrofitService;
-import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
-import ru.diasoft.friendsphoto.utils.ConstantManager;
+import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
 
 
 public class MainFragment extends Fragment {
@@ -28,6 +25,7 @@ public class MainFragment extends Fragment {
 //    private OnFragmentInteractionListener mListener;
 private static final String TAG =  " MainFragment";
     private RecyclerView mRecyclerView;
+    private static final int REQUEST_CODE = 200;
 
 
     public MainFragment() {
@@ -45,7 +43,7 @@ private static final String TAG =  " MainFragment";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        loadFriends();
     }
 
     @Override
@@ -53,7 +51,7 @@ private static final String TAG =  " MainFragment";
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        loadFriends();
+      //  loadFriends();
         return rootView;
     }
 
@@ -63,11 +61,22 @@ private static final String TAG =  " MainFragment";
 
         RetrofitService.getInstance()
                 .getJSONApi()
-                .getMainJson("5.52","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506")
+                .getFriendsJson("5.52","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
+            //    .getFriendsJson("5.52","3325c48142a670e42db0fcc817d7fd46351d5e5511951214bac6cb77c70d31af97c0caa0f0ab6c88bd1f2")
                 .enqueue(new Callback<FriendsListRes>() {
                     @Override
                     public void onResponse(Call<FriendsListRes> call, Response<FriendsListRes> response) {
                         try {
+                            if (response.code() != REQUEST_CODE || response.body().getResponse() == null) {
+//                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+//                                startActivity(intent);
+
+                            Resources resources = getContext().getResources();
+                            String clientId = resources.getString(R.string.client_id);
+                         //   Intent intent = LoginActivity.createAuthActivityIntent(getContext(), clientId);
+                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            startActivityForResult(intent, REQUEST_CODE);
+                            }
 
 //                            ArrayList<ArrayList<ItemList>> listAll = new ArrayList<>();
 //
@@ -106,6 +115,14 @@ private static final String TAG =  " MainFragment";
                     }
                 });
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (data == null) {return;}
+//        String name = data.getStringExtra("name");
+        String token = data.getStringExtra(LoginActivity.ACCESS_TOKEN);
+        Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -1,4 +1,5 @@
 package ru.diasoft.friendsphoto.ui.adapters;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import ru.diasoft.friendsphoto.R;
 
 public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    private Context mContext;
+
     public MainAdapter (){
     }
 
@@ -15,6 +18,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i){
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_friend,viewGroup,false);
+        mContext = viewGroup.getContext();
         return new ViewHolder(view);
     }
     @Override
