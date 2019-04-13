@@ -1,5 +1,6 @@
 package ru.diasoft.friendsphoto.ui.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.diasoft.friendsphoto.R;
+import ru.diasoft.friendsphoto.managers.DataManager;
 import ru.diasoft.friendsphoto.network.resources.FriendsListRes;
 import ru.diasoft.friendsphoto.network.services.RetrofitService;
 import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
@@ -23,9 +25,11 @@ import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
 public class MainFragment extends Fragment {
 
 //    private OnFragmentInteractionListener mListener;
-private static final String TAG =  " MainFragment";
+    private static final String TAG =  " MainFragment";
+    private static final String ACCESS_DENIED = "access_denied";
     private RecyclerView mRecyclerView;
     private static final int REQUEST_CODE = 200;
+    private DataManager mDataManager;
 
 
     public MainFragment() {
@@ -43,6 +47,7 @@ private static final String TAG =  " MainFragment";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDataManager = DataManager.getInstance();
         loadFriends();
     }
 
@@ -68,14 +73,9 @@ private static final String TAG =  " MainFragment";
                     public void onResponse(Call<FriendsListRes> call, Response<FriendsListRes> response) {
                         try {
                             if (response.code() != REQUEST_CODE || response.body().getResponse() == null) {
-//                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-//                                startActivity(intent);
 
-                            Resources resources = getContext().getResources();
-                            String clientId = resources.getString(R.string.client_id);
-                         //   Intent intent = LoginActivity.createAuthActivityIntent(getContext(), clientId);
-                            Intent intent = new Intent(getActivity(), LoginActivity.class);
-                            startActivityForResult(intent, REQUEST_CODE);
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                startActivityForResult(intent, REQUEST_CODE);
                             }
 
 //                            ArrayList<ArrayList<ItemList>> listAll = new ArrayList<>();
@@ -119,10 +119,19 @@ private static final String TAG =  " MainFragment";
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (data == null) {return;}
-//        String name = data.getStringExtra("name");
-        String token = data.getStringExtra(LoginActivity.ACCESS_TOKEN);
-        Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                String token = data.getStringExtra(LoginActivity.ACCESS_TOKEN);
+                if (token.equals(ACCESS_DENIED)) {
+                    getActivity().finish();
+                }
+                else {
+                    Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
+                    mDataManager.getPreferencesManager().saveUserToken(token);
+                }
+            }
+        }
     }
 
     @Override
@@ -130,25 +139,4 @@ private static final String TAG =  " MainFragment";
         mRecyclerView = getView().findViewById(R.id.friends_list);
     }
 
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     * <p>
-//     * See the Android Training lesson <a href=
-//     * "http://developer.android.com/training/basics/fragments/communicating.html"
-//     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
 }

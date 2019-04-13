@@ -12,7 +12,5 @@
     <string name="version">5.52</string>
 
     <string name="auth_url">https://oauth.vk.com/authorize?client_id=%1$s%2$sdisplay=%3$s%4$sredirect_uri=%5$s%6$sscope=%7$s%8$sresponse_type=%9$s%10$sv=%11$s</string>
-    <string name="token_url">https://github.com/login/oauth/access_token?client_id=%1$s%2$sclient_secret=%3$s%4$scode=%5$s</string>
-    <string name="emails_url">https://api.github.com/users/%1$s/followers?access_token=%2$s</string>
 
 </resources>

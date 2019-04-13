@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        webView = (WebView) findViewById(R.id.login_web_view);
+        webView = findViewById(R.id.login_web_view);
 
         mClientId = getString(R.string.client_id);
         mDisplay = getString(R.string.display);
@@ -104,8 +104,6 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
                 } else {
                     listener.onComplete(token);
                 }
-
-                //               new AccessTokenGetter(listener).execute(urls[1]);
                 return true;
             }
             return false;
