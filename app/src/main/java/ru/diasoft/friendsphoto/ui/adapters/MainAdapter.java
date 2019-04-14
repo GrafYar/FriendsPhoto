@@ -19,11 +19,13 @@ import butterknife.ButterKnife;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
     private Context mContext;
-    ArrayList<ItemRes> mFriendsList;
+    private ArrayList<ItemRes> mFriendsList;
+    private ViewHolder.ItemClickListener mItemClickListener;
 
-    public MainAdapter (Context context, ArrayList<ItemRes> friendsList){
+    public MainAdapter (Context context, ArrayList<ItemRes> friendsList, ViewHolder.ItemClickListener itemClickListener){
         this.mContext = context;
         this.mFriendsList = friendsList;
+        this.mItemClickListener = itemClickListener;
     }
 
     @NonNull
@@ -31,14 +33,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
     public MainAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i){
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_friend,viewGroup,false);
         //mContext = viewGroup.getContext();
-        return new ViewHolder(view);
+        return new ViewHolder(view, mItemClickListener);
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         ItemRes item = mFriendsList.get(i);
         Picasso.with(mContext)
                 .load(item.getPhoto50())
-              //  .error(mContext.getResources().getDrawable(R.drawable.placeholder))
+                .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
+                .error(mContext.getResources().getDrawable(R.drawable.camera_50))
                 .into(holder.mFriendImage);
         String fullName = item.getFirstName() + " " + item.getLastName();
         holder.mFriendName.setText(fullName);
@@ -54,9 +57,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
         @BindView(R.id.friend_name) TextView mFriendName;
         private ItemClickListener mItemClickListener;
 
-        private ViewHolder(View itemView) {
+        private ViewHolder(View itemView, ItemClickListener itemClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.mItemClickListener = itemClickListener;
+            itemView.setOnClickListener(this);
         }
 
         @Override

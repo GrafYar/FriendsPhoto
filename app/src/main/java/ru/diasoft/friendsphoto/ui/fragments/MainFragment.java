@@ -1,6 +1,7 @@
 package ru.diasoft.friendsphoto.ui.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,10 +35,19 @@ public class MainFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private static final int REQUEST_CODE = 200;
     private DataManager mDataManager;
+    private MainAdapter.ViewHolder.ItemClickListener mItemClickListener;
 
 
     public MainFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MainAdapter.ViewHolder.ItemClickListener) {
+            mItemClickListener = (MainAdapter.ViewHolder.ItemClickListener) context;
+        }
     }
 
     public static MainFragment newInstance(String param1, String param2) {
@@ -98,7 +108,7 @@ public class MainFragment extends Fragment {
                                     = new LinearLayoutManager(getContext());
                             mRecyclerView.setLayoutManager(layoutManager);
 
-                            MainAdapter mainAdapter = new MainAdapter(getContext(), friendsList);
+                            MainAdapter mainAdapter = new MainAdapter(getContext(), friendsList, mItemClickListener);
                             mRecyclerView.setAdapter(mainAdapter);
 
                         } catch (NullPointerException e) {
@@ -125,6 +135,7 @@ public class MainFragment extends Fragment {
                 else {
                     Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
                     mDataManager.getPreferencesManager().saveUserToken(token);
+                    loadFriends();
                 }
             }
         }
@@ -133,6 +144,12 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mRecyclerView = getView().findViewById(R.id.friends_list);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mItemClickListener = null;
     }
 
 }
