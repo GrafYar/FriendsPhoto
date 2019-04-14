@@ -95,9 +95,7 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
 
         @SuppressWarnings("deprecation") @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//            view.loadUrl(url);
             if (url.startsWith(view.getResources().getString(R.string.redirect_uri))) {
-               // String[] urls = url.split("=");
                String token = getAccessToken(url);
                 if (token.contains("Error")) {
                     listener.onError(token);
@@ -113,8 +111,12 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             String url = request.getUrl().toString();
             if (url.startsWith(view.getResources().getString(R.string.redirect_uri))) {
-                String[] urls = url.split("=");
- //               new AccessTokenGetter(listener).execute(urls[1]);
+                String token = getAccessToken(url);
+                if (token.contains("Error")) {
+                    listener.onError(token);
+                } else {
+                    listener.onComplete(token);
+                }
                 return true;
             }
             return false;

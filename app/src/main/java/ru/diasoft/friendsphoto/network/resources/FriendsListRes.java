@@ -1,6 +1,6 @@
+
 package ru.diasoft.friendsphoto.network.resources;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,13 +8,13 @@ public class FriendsListRes {
 
     @SerializedName("response")
     @Expose
-    private List<Integer> response = null;
+    private Response response;
 
-    public List<Integer> getResponse() {
+    public Response getResponse() {
         return response;
     }
 
-    public void setResponse(List<Integer> response) {
+    public void setResponse(Response response) {
         this.response = response;
     }
 

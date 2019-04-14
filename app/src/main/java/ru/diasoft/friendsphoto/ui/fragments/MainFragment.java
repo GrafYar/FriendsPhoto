@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.managers.DataManager;
 import ru.diasoft.friendsphoto.network.resources.FriendsListRes;
+import ru.diasoft.friendsphoto.network.resources.Item;
 import ru.diasoft.friendsphoto.network.services.RetrofitService;
 import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
 
@@ -63,11 +66,14 @@ public class MainFragment extends Fragment {
     private void loadFriends() {
 
      //   mRecyclerView.setAdapter(new MainAdapter());
+        String token = mDataManager.getPreferencesManager().loadUserToken();
+        String fields = "id,first_name, last_name, photo_50, online";
 
         RetrofitService.getInstance()
                 .getJSONApi()
-                .getFriendsJson("5.52","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
+             //   .getFriendsJson("5.59","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
             //    .getFriendsJson("5.52","3325c48142a670e42db0fcc817d7fd46351d5e5511951214bac6cb77c70d31af97c0caa0f0ab6c88bd1f2")
+                .getFriendsJson("5.59",token, fields)
                 .enqueue(new Callback<FriendsListRes>() {
                     @Override
                     public void onResponse(Call<FriendsListRes> call, Response<FriendsListRes> response) {
@@ -77,6 +83,8 @@ public class MainFragment extends Fragment {
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivityForResult(intent, REQUEST_CODE);
                             }
+
+                            ArrayList<Item> friends = new ArrayList<>(response.body().getResponse().getItems());
 
 //                            ArrayList<ArrayList<ItemList>> listAll = new ArrayList<>();
 //

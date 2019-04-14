@@ -8,7 +8,7 @@ import ru.diasoft.friendsphoto.network.resources.FriendsListRes;
 
 public interface RestService {
 
-    @POST("method/friends.getOnline?")
+    @POST("method/friends.get?")
     @FormUrlEncoded
-    Call<FriendsListRes> getFriendsJson(@Field("v") String version, @Field("access_token") String token);
+    Call<FriendsListRes> getFriendsJson(@Field("v") String version, @Field("access_token") String token, @Field("fields") String fields);
 }
