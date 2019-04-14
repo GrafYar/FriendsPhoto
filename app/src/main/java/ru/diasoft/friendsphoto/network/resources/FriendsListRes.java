@@ -8,13 +8,13 @@ public class FriendsListRes {
 
     @SerializedName("response")
     @Expose
-    private Response response;
+    private ResponseListRes response;
 
-    public Response getResponse() {
+    public ResponseListRes getResponse() {
         return response;
     }
 
-    public void setResponse(Response response) {
+    public void setResponse(ResponseListRes response) {
         this.response = response;
     }
 

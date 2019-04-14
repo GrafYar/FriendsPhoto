@@ -11,7 +11,7 @@ public class PreferencesManager {
     private static final String AUTH_TOKEN = ConstantManager.AUTH_TOKEN;
 
     public PreferencesManager() {
-        this.mSharedPreferences = FriendsPhotoApplication.getsSharedPreferences();
+        this.mSharedPreferences = FriendsPhotoApplication.getSharedPreferences();
     }
 
     public void saveUserToken (String token) {

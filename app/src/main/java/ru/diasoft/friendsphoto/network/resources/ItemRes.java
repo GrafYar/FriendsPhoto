@@ -4,7 +4,7 @@ package ru.diasoft.friendsphoto.network.resources;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Item {
+public class ItemRes {
 
     @SerializedName("id")
     @Expose

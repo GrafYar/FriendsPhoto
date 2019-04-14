@@ -2,9 +2,9 @@ package ru.diasoft.friendsphoto.ui.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +20,10 @@ import retrofit2.Response;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.managers.DataManager;
 import ru.diasoft.friendsphoto.network.resources.FriendsListRes;
-import ru.diasoft.friendsphoto.network.resources.Item;
+import ru.diasoft.friendsphoto.network.resources.ItemRes;
 import ru.diasoft.friendsphoto.network.services.RetrofitService;
 import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
+import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 
 
 public class MainFragment extends Fragment {
@@ -84,35 +85,22 @@ public class MainFragment extends Fragment {
                                 startActivityForResult(intent, REQUEST_CODE);
                             }
 
-                            ArrayList<Item> friends = new ArrayList<>(response.body().getResponse().getItems());
+                            ArrayList<ItemRes> friendsList = new ArrayList<>(response.body().getResponse().getItems());
 
-//                            ArrayList<ArrayList<ItemList>> listAll = new ArrayList<>();
-//
-//                            ArrayList<ItemList> shares = new ArrayList<ItemList>(response.body().getData().getBlocks().getShares().getList());
-//                            ArrayList<ItemList> category = new ArrayList<ItemList>(response.body().getData().getBlocks().getCategories());
-//                            ArrayList<ItemList> catalog = new ArrayList<ItemList>(response.body().getData().getBlocks().getCatalog());
-//                            String catalogCount = response.body().getData().getCatalogCount();
-//
-//                            mTitleApp = response.body().getData().getTitle();
-//                            mTitleImageURL = response.body().getData().getImage();
+
 //
 //                            ((MainActivity) getActivity())
 //                                    .setActionBarTitle(mTitleApp);
 //                            ((MainActivity) getActivity())
 //                                    .setActionBarImage(mTitleImageURL);
-//
-//                            listAll.add(shares);
-//                            listAll.add(category);
-//                            listAll.add(catalog);
 
-//                            LinearLayoutManager layoutManager
-//                                    = new LinearLayoutManager(getContext());
-//                            mRecyclerView.setLayoutManager(layoutManager);
-//
-//                            MainAdapter mainAdapter = new MainAdapter(getContext(), listAll, shares, category, catalog, catalogCount,
-//                                    mCatalogItemClickListener,mCatalogButtonMoreClickListener, mCategoryItemClickListener, mSharesItemClickListener, mSharesButtonMoreClickListener);
-//
-//                            mRecyclerView.setAdapter(mainAdapter);
+                            LinearLayoutManager layoutManager
+                                    = new LinearLayoutManager(getContext());
+                            mRecyclerView.setLayoutManager(layoutManager);
+
+                            MainAdapter mainAdapter = new MainAdapter(getContext(), friendsList);
+                            mRecyclerView.setAdapter(mainAdapter);
+
                         } catch (NullPointerException e) {
                             Log.e(TAG, e.toString());
                         }

@@ -5,14 +5,14 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Response {
+public class ResponseListRes {
 
     @SerializedName("count")
     @Expose
     private Integer count;
     @SerializedName("items")
     @Expose
-    private List<Item> items = null;
+    private List<ItemRes> items = null;
 
     public Integer getCount() {
         return count;
@@ -22,11 +22,11 @@ public class Response {
         this.count = count;
     }
 
-    public List<Item> getItems() {
+    public List<ItemRes> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<ItemRes> items) {
         this.items = items;
     }
 

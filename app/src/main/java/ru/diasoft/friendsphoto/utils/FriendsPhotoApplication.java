@@ -13,7 +13,7 @@ public class FriendsPhotoApplication extends Application {
         sSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
-    public static SharedPreferences getsSharedPreferences() {
+    public static SharedPreferences getSharedPreferences() {
         return sSharedPreferences;
     }
 }
