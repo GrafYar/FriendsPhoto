@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import ru.diasoft.friendsphoto.R;
+import ru.diasoft.friendsphoto.network.resources.GalleryItemRes;
+import ru.diasoft.friendsphoto.storage_models.PhotoDTO;
 import ru.diasoft.friendsphoto.ui.adapters.GalleryAdapter;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 import ru.diasoft.friendsphoto.ui.fragments.GalleryFragment;
@@ -16,6 +18,8 @@ import ru.diasoft.friendsphoto.utils.NetworkStatusChecker;
 
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements MainAdapter.ViewHolder.ItemClickListener,
@@ -60,7 +64,10 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
     }
 
     @Override
-    public void onItemGalleryClickListener(int position, int id) {
-
+    public void onItemGalleryClickListener(int position, int id, ArrayList<GalleryItemRes> galleryList) {
+        PhotoDTO photoDTO = new PhotoDTO(galleryList.get(position));
+        Intent intent = new Intent(this, PhotoGalleryActivity.class);
+        intent.putExtra(ConstantManager.PARCELABLE_KEY, photoDTO);
+        startActivity(intent);
     }
 }

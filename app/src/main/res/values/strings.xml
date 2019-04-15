@@ -13,4 +13,8 @@
 
     <string name="auth_url">https://oauth.vk.com/authorize?client_id=%1$s%2$sdisplay=%3$s%4$sredirect_uri=%5$s%6$sscope=%7$s%8$sresponse_type=%9$s%10$sv=%11$s</string>
 
+    <string name="title_activity_photo_gallery">PhotoGalleryActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>
