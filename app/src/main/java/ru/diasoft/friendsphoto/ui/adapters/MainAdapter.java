@@ -13,16 +13,16 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ru.diasoft.friendsphoto.R;
-import ru.diasoft.friendsphoto.network.resources.ItemRes;
+import ru.diasoft.friendsphoto.network.resources.FriendsItemRes;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
     private Context mContext;
-    private ArrayList<ItemRes> mFriendsList;
+    private ArrayList<FriendsItemRes> mFriendsList;
     private ViewHolder.ItemClickListener mItemClickListener;
 
-    public MainAdapter (Context context, ArrayList<ItemRes> friendsList, ViewHolder.ItemClickListener itemClickListener){
+    public MainAdapter (Context context, ArrayList<FriendsItemRes> friendsList, ViewHolder.ItemClickListener itemClickListener){
         this.mContext = context;
         this.mFriendsList = friendsList;
         this.mItemClickListener = itemClickListener;
@@ -37,7 +37,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
-        ItemRes item = mFriendsList.get(i);
+        FriendsItemRes item = mFriendsList.get(i);
+        holder.mId = item.getId();
         Picasso.with(mContext)
                 .load(item.getPhoto50())
                 .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
@@ -55,6 +56,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.friend_image) CircleImageView mFriendImage;
         @BindView(R.id.friend_name) TextView mFriendName;
+        int mId;
         private ItemClickListener mItemClickListener;
 
         private ViewHolder(View itemView, ItemClickListener itemClickListener) {
@@ -67,12 +69,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
         @Override
         public void onClick(View v) {
             if(mItemClickListener!= null){
-                mItemClickListener.onItemClickListener(getAdapterPosition());
+                mItemClickListener.onItemClickListener(getAdapterPosition(), mId);
             }
         }
 
         public interface ItemClickListener {
-            void onItemClickListener (int position);
+            void onItemClickListener (int position, int id);
         }
     }
 }

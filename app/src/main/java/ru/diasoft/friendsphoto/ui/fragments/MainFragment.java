@@ -21,7 +21,7 @@ import retrofit2.Response;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.managers.DataManager;
 import ru.diasoft.friendsphoto.network.resources.FriendsListRes;
-import ru.diasoft.friendsphoto.network.resources.ItemRes;
+import ru.diasoft.friendsphoto.network.resources.FriendsItemRes;
 import ru.diasoft.friendsphoto.network.services.RetrofitService;
 import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
@@ -33,8 +33,9 @@ public class MainFragment extends Fragment {
     private static final String TAG =  " MainFragment";
     private static final String ACCESS_DENIED = "access_denied";
     private RecyclerView mRecyclerView;
-    private static final int REQUEST_CODE = 200;
+    private static final int REQUEST_CODE = 100;
     private DataManager mDataManager;
+    private ArrayList<FriendsItemRes> mFriendsList;
     private MainAdapter.ViewHolder.ItemClickListener mItemClickListener;
 
 
@@ -61,8 +62,8 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDataManager = DataManager.getInstance();
-        loadFriends();
+//        mDataManager = DataManager.getInstance();
+//        loadFriends();
     }
 
     @Override
@@ -70,7 +71,8 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-      //  loadFriends();
+        mDataManager = DataManager.getInstance();
+        loadFriends();
         return rootView;
     }
 
@@ -89,16 +91,14 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onResponse(Call<FriendsListRes> call, Response<FriendsListRes> response) {
                         try {
-                            if (response.code() != REQUEST_CODE || response.body().getResponse() == null) {
+                            if (response.code() != 200 || response.body().getResponse() == null) {
 
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivityForResult(intent, REQUEST_CODE);
                             }
 
-                            ArrayList<ItemRes> friendsList = new ArrayList<>(response.body().getResponse().getItems());
+                            mFriendsList = new ArrayList<>(response.body().getResponse().getItems());
 
-
-//
 //                            ((MainActivity) getActivity())
 //                                    .setActionBarTitle(mTitleApp);
 //                            ((MainActivity) getActivity())
@@ -108,7 +108,7 @@ public class MainFragment extends Fragment {
                                     = new LinearLayoutManager(getContext());
                             mRecyclerView.setLayoutManager(layoutManager);
 
-                            MainAdapter mainAdapter = new MainAdapter(getContext(), friendsList, mItemClickListener);
+                            MainAdapter mainAdapter = new MainAdapter(getContext(), mFriendsList, mItemClickListener);
                             mRecyclerView.setAdapter(mainAdapter);
 
                         } catch (NullPointerException e) {
