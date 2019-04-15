@@ -4,7 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="client_id">6941249</string>
+    <string name="client_id">6946108</string>
     <string name="display">page</string>
     <string name="redirect_uri">https://oauth.vk.com/blank.html</string>
     <string name="scope">friends</string>

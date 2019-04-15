@@ -21,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.managers.DataManager;
+import ru.diasoft.friendsphoto.network.resources.GalleryItemRes;
 import ru.diasoft.friendsphoto.network.resources.GalleryListRes;
 import ru.diasoft.friendsphoto.network.services.RetrofitService;
 import ru.diasoft.friendsphoto.storage_models.PhotoDTO;
@@ -131,6 +132,7 @@ public class PhotoGalleryActivity extends AppCompatActivity {
 
         Picasso.with(this)
                 .load(photoDTO.getPhoto())
+               // .load(getMaxImage(item))
                 .placeholder(this.getResources().getDrawable(R.drawable.camera_50))
                 .error(this.getResources().getDrawable(R.drawable.camera_50))
                 .into((ImageView) mContentView);
@@ -140,48 +142,6 @@ public class PhotoGalleryActivity extends AppCompatActivity {
 
         String token = mDataManager.getPreferencesManager().loadUserToken();
         String albumId = "profile";
-
-        /*RetrofitService.getInstance()
-                .getJSONApi()
-                //   .getFriendsJson("5.59","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
-                //    .getFriendsJson("5.52","3325c48142a670e42db0fcc817d7fd46351d5e5511951214bac6cb77c70d31af97c0caa0f0ab6c88bd1f2")
-                .getGalleryJson("5.59",token, mId, albumId)
-                .enqueue(new Callback<GalleryListRes>() {
-                    @Override
-                    public void onResponse(Call<GalleryListRes> call, Response<GalleryListRes> response) {
-                        try {
-                            if (response.code() != 200 || response.body().getResponse() == null) {
-
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                startActivityForResult(intent, REQUEST_CODE);
-                            }
-
-                            mGalleryList = new ArrayList<>(response.body().getResponse().getItems());
-
-
-//                            ((MainActivity) getActivity())
-//                                    .setActionBarTitle(mTitleApp);
-//                            ((MainActivity) getActivity())
-//                                    .setActionBarImage(mTitleImageURL);
-
-                            LinearLayoutManager layoutManager
-                                    = new LinearLayoutManager(getContext());
-                            mRecyclerView.setLayoutManager(layoutManager);
-
-                            GalleryAdapter galleryAdapter = new GalleryAdapter(getContext(), mGalleryList, mItemGalleryClickListener);
-                            mRecyclerView.setAdapter(galleryAdapter);
-
-                        } catch (NullPointerException e) {
-                            Log.e(TAG, e.toString());
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<GalleryListRes> call, Throwable t) {
-                        Log.e(TAG, t.toString());
-                    }
-                });*/
-
-
 
     }
 
@@ -236,5 +196,22 @@ public class PhotoGalleryActivity extends AppCompatActivity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    public String getMaxImage(GalleryItemRes item) {
+        if (item.getPhoto2560()!= null) {
+            return item.getPhoto2560();
+        } else if (item.getPhoto1280()!= null) {
+            return item.getPhoto1280();
+        } else if (item.getPhoto807()!= null) {
+            return item.getPhoto807();
+        } else if (item.getPhoto604()!= null) {
+            return item.getPhoto604();
+        } else if (item.getPhoto130()!= null) {
+            return item.getPhoto130();
+        } else if (item.getPhoto75()!= null) {
+            return item.getPhoto75();
+        }
+        return null;
     }
 }

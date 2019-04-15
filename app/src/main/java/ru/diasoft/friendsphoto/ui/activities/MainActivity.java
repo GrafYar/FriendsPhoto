@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
 
     @Override
     public void onItemGalleryClickListener(int position, int id, ArrayList<GalleryItemRes> galleryList) {
+     //   galleryList.get(position).
         PhotoDTO photoDTO = new PhotoDTO(galleryList.get(position));
         Intent intent = new Intent(this, PhotoGalleryActivity.class);
         intent.putExtra(ConstantManager.PARCELABLE_KEY, photoDTO);

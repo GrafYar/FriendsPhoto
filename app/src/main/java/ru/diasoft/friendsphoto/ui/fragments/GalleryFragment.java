@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -107,8 +108,8 @@ public class GalleryFragment extends Fragment {
 //                            ((MainActivity) getActivity())
 //                                    .setActionBarImage(mTitleImageURL);
 
-                            LinearLayoutManager layoutManager
-                                    = new LinearLayoutManager(getContext());
+                            GridLayoutManager layoutManager
+                                    = new GridLayoutManager(getContext(),2);
                             mRecyclerView.setLayoutManager(layoutManager);
 
                             GalleryAdapter galleryAdapter = new GalleryAdapter(getContext(), mGalleryList, mItemGalleryClickListener);

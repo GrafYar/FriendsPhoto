@@ -39,11 +39,30 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     public void onBindViewHolder(@NonNull GalleryAdapter.ViewHolder holder, int i) {
         GalleryItemRes item = mGalleryList.get(i);
      //   holder.mId = item.getId();
+        String s = getMaxImage(item);
         Picasso.with(mContext)
-                .load(item.getPhoto604())
+               // .load(item.getPhoto604())
+                .load(getMaxImage(item))
                 .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
                 .error(mContext.getResources().getDrawable(R.drawable.camera_50))
                 .into(holder.mGalleryImage);
+    }
+
+    public String getMaxImage(GalleryItemRes item) {
+        if (item.getPhoto2560()!= null) {
+            return item.getPhoto2560();
+        } else if (item.getPhoto1280()!= null) {
+            return item.getPhoto1280();
+        } else if (item.getPhoto807()!= null) {
+            return item.getPhoto807();
+        } else if (item.getPhoto604()!= null) {
+            return item.getPhoto604();
+        } else if (item.getPhoto130()!= null) {
+            return item.getPhoto130();
+        } else if (item.getPhoto75()!= null) {
+            return item.getPhoto75();
+        }
+        return null;
     }
 
     @Override

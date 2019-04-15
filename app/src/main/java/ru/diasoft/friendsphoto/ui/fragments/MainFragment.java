@@ -3,8 +3,10 @@ package ru.diasoft.friendsphoto.ui.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +29,7 @@ import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
 //    private OnFragmentInteractionListener mListener;
     private static final String TAG =  " MainFragment";
@@ -37,7 +39,7 @@ public class MainFragment extends Fragment {
     private DataManager mDataManager;
     private ArrayList<FriendsItemRes> mFriendsList;
     private MainAdapter.ViewHolder.ItemClickListener mItemClickListener;
-
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public MainFragment() {
         // Required empty public constructor
@@ -73,6 +75,10 @@ public class MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         mDataManager = DataManager.getInstance();
         loadFriends();
+        mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeColors(
+                  Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
         return rootView;
     }
 
@@ -80,36 +86,39 @@ public class MainFragment extends Fragment {
 
      //   mRecyclerView.setAdapter(new MainAdapter());
         String token = mDataManager.getPreferencesManager().loadUserToken();
-        String fields = "id,first_name, last_name, photo_50, online";
+        String fields = "id,first_name,last_name,photo_50,online";
 
         RetrofitService.getInstance()
                 .getJSONApi()
              //   .getFriendsJson("5.59","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
             //    .getFriendsJson("5.52","3325c48142a670e42db0fcc817d7fd46351d5e5511951214bac6cb77c70d31af97c0caa0f0ab6c88bd1f2")
-                .getFriendsJson("5.59",token, fields)
+                .getFriendsJson("5.52",token, fields)
                 .enqueue(new Callback<FriendsListRes>() {
                     @Override
                     public void onResponse(Call<FriendsListRes> call, Response<FriendsListRes> response) {
                         try {
-                            if (response.code() != 200 || response.body().getResponse() == null) {
-
+                           // if (response.code() != 200 || response.body().getResponse() == null) {
+                            if (response.body().getResponse() == null) {
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivityForResult(intent, REQUEST_CODE);
-                            }
 
-                            mFriendsList = new ArrayList<>(response.body().getResponse().getItems());
+                            }
+                            else {
+
+                                mFriendsList = new ArrayList<>(response.body().getResponse().getItems());
 
 //                            ((MainActivity) getActivity())
 //                                    .setActionBarTitle(mTitleApp);
 //                            ((MainActivity) getActivity())
 //                                    .setActionBarImage(mTitleImageURL);
 
-                            LinearLayoutManager layoutManager
-                                    = new LinearLayoutManager(getContext());
-                            mRecyclerView.setLayoutManager(layoutManager);
+                                LinearLayoutManager layoutManager
+                                        = new LinearLayoutManager(getContext());
+                                mRecyclerView.setLayoutManager(layoutManager);
 
-                            MainAdapter mainAdapter = new MainAdapter(getContext(), mFriendsList, mItemClickListener);
-                            mRecyclerView.setAdapter(mainAdapter);
+                                MainAdapter mainAdapter = new MainAdapter(getContext(), mFriendsList, mItemClickListener);
+                                mRecyclerView.setAdapter(mainAdapter);
+                            }
 
                         } catch (NullPointerException e) {
                             Log.e(TAG, e.toString());
@@ -134,6 +143,7 @@ public class MainFragment extends Fragment {
                 }
                 else {
                     Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, token);
                     mDataManager.getPreferencesManager().saveUserToken(token);
                     loadFriends();
                 }
@@ -150,6 +160,12 @@ public class MainFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mItemClickListener = null;
+    }
+
+    @Override
+    public void onRefresh() {
+        loadFriends();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
 }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_overlay"
+    android:background="#000000"
     tools:context=".ui.activities.PhotoGalleryActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
