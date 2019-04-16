@@ -122,23 +122,19 @@ public class PhotoGalleryActivity extends AppCompatActivity {
             }
         });
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
 
 
         PhotoDTO photoDTO = getIntent().getParcelableExtra(ConstantManager.PARCELABLE_KEY);
 
         Picasso.with(this)
-                .load(photoDTO.getPhoto())
-               // .load(getMaxImage(item))
+               // .load(photoDTO.getPhoto())
+                .load(getMaxImage(photoDTO))
                 .placeholder(this.getResources().getDrawable(R.drawable.camera_50))
                 .error(this.getResources().getDrawable(R.drawable.camera_50))
                 .into((ImageView) mContentView);
 
 
-       DataManager mDataManager = DataManager.getInstance();
+       DataManager mDataManager = DataManager.getInstance(this);
 
         String token = mDataManager.getPreferencesManager().loadUserToken();
         String albumId = "profile";
@@ -198,19 +194,20 @@ public class PhotoGalleryActivity extends AppCompatActivity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    public String getMaxImage(GalleryItemRes item) {
-        if (item.getPhoto2560()!= null) {
-            return item.getPhoto2560();
-        } else if (item.getPhoto1280()!= null) {
-            return item.getPhoto1280();
-        } else if (item.getPhoto807()!= null) {
-            return item.getPhoto807();
-        } else if (item.getPhoto604()!= null) {
-            return item.getPhoto604();
-        } else if (item.getPhoto130()!= null) {
-            return item.getPhoto130();
-        } else if (item.getPhoto75()!= null) {
-            return item.getPhoto75();
+    public String getMaxImage(PhotoDTO photoDTO) {
+//        if (photoDTO.getPhoto2560()!= null) {
+//            return photoDTO.getPhoto2560();
+//        } else if (photoDTO.getPhoto1280()!= null) {
+//            return photoDTO.getPhoto1280();
+//        } else
+            if (photoDTO.getPhoto807()!= null) {
+            return photoDTO.getPhoto807();
+        } else if (photoDTO.getPhoto604()!= null) {
+            return photoDTO.getPhoto604();
+        } else if (photoDTO.getPhoto130()!= null) {
+            return photoDTO.getPhoto130();
+        } else if (photoDTO.getPhoto75()!= null) {
+            return photoDTO.getPhoto75();
         }
         return null;
     }

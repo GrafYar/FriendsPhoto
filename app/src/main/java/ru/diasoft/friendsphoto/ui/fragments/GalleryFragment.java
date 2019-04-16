@@ -68,7 +68,7 @@ public class GalleryFragment extends Fragment {
             Log.d("ID ", mId);
             Toast.makeText(getActivity(), mId, Toast.LENGTH_SHORT).show();
         }
-        mDataManager = DataManager.getInstance();
+        mDataManager = DataManager.getInstance(getContext());
         loadGallery();
         return inflater.inflate(R.layout.fragment_gallery, container, false);
     }

@@ -3,17 +3,21 @@ package ru.diasoft.friendsphoto.ui.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.diasoft.friendsphoto.R;
+import ru.diasoft.friendsphoto.managers.DataManager;
 import ru.diasoft.friendsphoto.network.resources.GalleryItemRes;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder>{
@@ -36,16 +40,55 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         return new GalleryAdapter.ViewHolder(view, mGalleryList, mItemGalleryClickListener);
     }
     @Override
-    public void onBindViewHolder(@NonNull GalleryAdapter.ViewHolder holder, int i) {
-        GalleryItemRes item = mGalleryList.get(i);
+    public void onBindViewHolder(@NonNull final GalleryAdapter.ViewHolder holder, int i) {
+        final GalleryItemRes item = mGalleryList.get(i);
+//        String photo;
+
      //   holder.mId = item.getId();
         String s = getMaxImage(item);
-        Picasso.with(mContext)
+//        Picasso.with(mContext)
+//               // .load(item.getPhoto604())
+//                .load(getMaxImage(item))
+//                .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
+//                .error(mContext.getResources().getDrawable(R.drawable.camera_50))
+//                .into(holder.mGalleryImage);
+
+        DataManager.getInstance(mContext).getPicasso()
                // .load(item.getPhoto604())
                 .load(getMaxImage(item))
                 .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
                 .error(mContext.getResources().getDrawable(R.drawable.camera_50))
-                .into(holder.mGalleryImage);
+                .fit()
+                .centerCrop()
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(holder.mGalleryImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("123", " load from cache");
+                    }
+
+                    @Override
+                    public void onError() {
+                        DataManager.getInstance(mContext).getPicasso()
+                                // .load(item.getPhoto604())
+                                .load(getMaxImage(item))
+                                .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
+                                .error(mContext.getResources().getDrawable(R.drawable.camera_50))
+                                .fit()
+                                .centerCrop()
+                                .into(holder.mGalleryImage, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.d("123", " Can not fetch image");
+                                    }
+                                });
+                    }
+                });
     }
 
     public String getMaxImage(GalleryItemRes item) {
