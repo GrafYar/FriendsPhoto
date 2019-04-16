@@ -4,12 +4,21 @@ import android.content.Context;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.diasoft.friendsphoto.network.PicassoCache;
+import ru.diasoft.friendsphoto.storage.models.DaoMaster;
+import ru.diasoft.friendsphoto.storage.models.DaoSession;
+import ru.diasoft.friendsphoto.storage.models.Friend;
+import ru.diasoft.friendsphoto.utils.FriendsPhotoApplication;
 
 public class DataManager {
 
     private static DataManager INSTANCE = null;
     private PreferencesManager mPreferencesManager;
+
+    private DaoSession mDaoSession;
 
     public Context getContext() {
         return mContext;
@@ -24,6 +33,7 @@ public class DataManager {
         this.mPreferencesManager = new PreferencesManager();
         this.mContext = context;
         this.mPicasso = new PicassoCache(mContext).getPicassoInstance();
+        this.mDaoSession = FriendsPhotoApplication.getDaoSession();
     }
 
     public static DataManager getInstance(Context context) {
@@ -39,5 +49,22 @@ public class DataManager {
 
     public Picasso getPicasso() {
         return mPicasso;
+    }
+
+    public List<Friend> getFriendListFromDb() {
+        List<Friend> frindList = new ArrayList<>();
+
+        try {
+            frindList = mDaoSession.queryBuilder(Friend.class).build().list();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return frindList;
+    }
+
+    public DaoSession getDaoSession() {
+        return mDaoSession;
     }
 }

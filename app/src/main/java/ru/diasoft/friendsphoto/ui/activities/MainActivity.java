@@ -2,16 +2,14 @@ package ru.diasoft.friendsphoto.ui.activities;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.network.resources.GalleryItemRes;
-import ru.diasoft.friendsphoto.storage_models.PhotoDTO;
+import ru.diasoft.friendsphoto.storage.models.PhotoDTO;
 import ru.diasoft.friendsphoto.ui.adapters.GalleryAdapter;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 import ru.diasoft.friendsphoto.ui.fragments.GalleryFragment;
-import ru.diasoft.friendsphoto.ui.fragments.LoginFragment;
 import ru.diasoft.friendsphoto.ui.fragments.MainFragment;
 import ru.diasoft.friendsphoto.utils.ConstantManager;
 import ru.diasoft.friendsphoto.utils.NetworkStatusChecker;

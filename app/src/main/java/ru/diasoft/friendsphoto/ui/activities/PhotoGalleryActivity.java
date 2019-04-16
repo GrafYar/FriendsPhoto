@@ -1,31 +1,19 @@
 package ru.diasoft.friendsphoto.ui.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.managers.DataManager;
-import ru.diasoft.friendsphoto.network.resources.GalleryItemRes;
-import ru.diasoft.friendsphoto.network.resources.GalleryListRes;
-import ru.diasoft.friendsphoto.network.services.RetrofitService;
-import ru.diasoft.friendsphoto.storage_models.PhotoDTO;
-import ru.diasoft.friendsphoto.ui.adapters.GalleryAdapter;
+import ru.diasoft.friendsphoto.storage.models.PhotoDTO;
 import ru.diasoft.friendsphoto.utils.ConstantManager;
 
 /**

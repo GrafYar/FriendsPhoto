@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +26,8 @@ import ru.diasoft.friendsphoto.managers.DataManager;
 import ru.diasoft.friendsphoto.network.resources.FriendsListRes;
 import ru.diasoft.friendsphoto.network.resources.FriendsItemRes;
 import ru.diasoft.friendsphoto.network.services.RetrofitService;
+import ru.diasoft.friendsphoto.storage.models.Friend;
+import ru.diasoft.friendsphoto.storage.models.FriendDao;
 import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 
@@ -40,6 +43,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ArrayList<FriendsItemRes> mFriendsList;
     private MainAdapter.ViewHolder.ItemClickListener mItemClickListener;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private FriendDao mFriendDao;
 
     public MainFragment() {
         // Required empty public constructor
@@ -74,6 +78,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         mDataManager = DataManager.getInstance(getContext());
+        mFriendDao = mDataManager.getDaoSession().getFriendDao();
         loadFriends();
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeColors(
@@ -105,6 +110,17 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             }
                             else {
 
+                                List<Friend> allFriends = new ArrayList<>();
+
+                                for (FriendsItemRes friendsItemRes: response.body().getResponse().getItems()) {
+                                    allFriends.add(new Friend(friendsItemRes));
+                                }
+
+                                mFriendDao.insertOrReplaceInTx(allFriends);
+                                List<Friend> friendsList = new ArrayList<>();
+
+                                friendsList = mDataManager.getFriendListFromDb();
+
                                 mFriendsList = new ArrayList<>(response.body().getResponse().getItems());
 
 //                            ((MainActivity) getActivity())
@@ -118,6 +134,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                                 MainAdapter mainAdapter = new MainAdapter(getContext(), mFriendsList, mItemClickListener);
                                 mRecyclerView.setAdapter(mainAdapter);
+
+                                mSwipeRefreshLayout.setRefreshing(false);
                             }
 
                         } catch (NullPointerException e) {
@@ -165,7 +183,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         loadFriends();
-        mSwipeRefreshLayout.setRefreshing(false);
+     //   mSwipeRefreshLayout.setRefreshing(false);
     }
 
 }

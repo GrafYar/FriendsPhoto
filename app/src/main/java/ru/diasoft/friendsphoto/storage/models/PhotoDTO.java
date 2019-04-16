@@ -1,4 +1,4 @@
-package ru.diasoft.friendsphoto.storage_models;
+package ru.diasoft.friendsphoto.storage.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
