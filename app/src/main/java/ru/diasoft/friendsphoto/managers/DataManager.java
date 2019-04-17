@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.greendao.database.Database;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,16 +54,15 @@ public class DataManager {
     }
 
     public List<Friend> getFriendListFromDb() {
-        List<Friend> frindList = new ArrayList<>();
-
+        List<Friend> friendList = new ArrayList<>();
         try {
-            frindList = mDaoSession.queryBuilder(Friend.class).build().list();
+            friendList = mDaoSession.queryBuilder(Friend.class).build().list();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
-        return frindList;
+        return friendList;
     }
 
     public DaoSession getDaoSession() {

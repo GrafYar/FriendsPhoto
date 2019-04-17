@@ -35,7 +35,13 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
 
 
     private void loadData(){
-        if(NetworkStatusChecker.isNetworkAvailable(this)) {
+
+        Fragment fragment = new MainFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment).commit();
+
+
+ /*       if(NetworkStatusChecker.isNetworkAvailable(this)) {
             //    Fragment fragment = new MainFragment();
             Fragment fragment = new MainFragment();
             getSupportFragmentManager().beginTransaction()
@@ -45,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Нет подключения!", Toast.LENGTH_SHORT);
             toast.show();
-        }
+        }*/
     }
 
     @Override

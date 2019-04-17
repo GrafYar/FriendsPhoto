@@ -10,19 +10,21 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.network.resources.FriendsItemRes;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.diasoft.friendsphoto.storage.models.Friend;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
     private Context mContext;
-    private ArrayList<FriendsItemRes> mFriendsList;
+    private List<Friend> mFriendsList;
     private ViewHolder.ItemClickListener mItemClickListener;
 
-    public MainAdapter (Context context, ArrayList<FriendsItemRes> friendsList, ViewHolder.ItemClickListener itemClickListener){
+    public MainAdapter (Context context, List<Friend> friendsList, ViewHolder.ItemClickListener itemClickListener){
         this.mContext = context;
         this.mFriendsList = friendsList;
         this.mItemClickListener = itemClickListener;
@@ -37,10 +39,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
-        FriendsItemRes item = mFriendsList.get(i);
-        holder.mId = item.getId();
+        Friend item = mFriendsList.get(i);
+        holder.mId = item.getFriendId();
         Picasso.with(mContext)
-                .load(item.getPhoto50())
+                .load(item.getPhoto())
                 .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
                 .error(mContext.getResources().getDrawable(R.drawable.camera_50))
                 .into(holder.mFriendImage);

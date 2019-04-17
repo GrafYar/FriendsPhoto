@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,6 +31,7 @@ import ru.diasoft.friendsphoto.storage.models.Friend;
 import ru.diasoft.friendsphoto.storage.models.FriendDao;
 import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
+import ru.diasoft.friendsphoto.utils.NetworkStatusChecker;
 
 
 public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
@@ -93,60 +95,75 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         String token = mDataManager.getPreferencesManager().loadUserToken();
         String fields = "id,first_name,last_name,photo_50,online";
 
-        RetrofitService.getInstance()
-                .getJSONApi()
-             //   .getFriendsJson("5.59","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
-            //    .getFriendsJson("5.52","3325c48142a670e42db0fcc817d7fd46351d5e5511951214bac6cb77c70d31af97c0caa0f0ab6c88bd1f2")
-                .getFriendsJson("5.59",token, fields)
-                .enqueue(new Callback<FriendsListRes>() {
-                    @Override
-                    public void onResponse(Call<FriendsListRes> call, Response<FriendsListRes> response) {
-                        try {
-                           // if (response.code() != 200 || response.body().getResponse() == null) {
-                           /* if (response.body().getResponse() == null) {
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                startActivityForResult(intent, REQUEST_CODE);
+        if(NetworkStatusChecker.isNetworkAvailable(getContext())) {
+            //    Fragment fragment = new MainFragment();
 
-                            }*/
-//                            else {
 
-                                List<Friend> allFriends = new ArrayList<>();
+            RetrofitService.getInstance()
+                    .getJSONApi()
+                 //   .getFriendsJson("5.59","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
+                //    .getFriendsJson("5.52","3325c48142a670e42db0fcc817d7fd46351d5e5511951214bac6cb77c70d31af97c0caa0f0ab6c88bd1f2")
+                    .getFriendsJson("5.59",token, fields)
+                    .enqueue(new Callback<FriendsListRes>() {
+                        @Override
+                        public void onResponse(Call<FriendsListRes> call, Response<FriendsListRes> response) {
+                            try {
+                               // if (response.code() != 200 || response.body().getResponse() == null) {
+                               /* if (response.body().getResponse() == null) {
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivityForResult(intent, REQUEST_CODE);
 
-                                for (FriendsItemRes friendsItemRes: response.body().getResponse().getItems()) {
-                                    allFriends.add(new Friend(friendsItemRes));
-                                }
+                                }*/
+    //                            else {
 
-                                mFriendDao.insertOrReplaceInTx(allFriends);
-                                List<Friend> friendsList = new ArrayList<>();
+                                    List<Friend> allFriends = new ArrayList<>();
 
-                                friendsList = mDataManager.getFriendListFromDb();
+                                    for (FriendsItemRes friendsItemRes: response.body().getResponse().getItems()) {
+                                        allFriends.add(new Friend(friendsItemRes));
+                                    }
 
-                                mFriendsList = new ArrayList<>(response.body().getResponse().getItems());
+                                    mFriendDao.insertOrReplaceInTx(allFriends);
+                                    List<Friend> friendsList = new ArrayList<>();
 
-//                            ((MainActivity) getActivity())
-//                                    .setActionBarTitle(mTitleApp);
-//                            ((MainActivity) getActivity())
-//                                    .setActionBarImage(mTitleImageURL);
+//                                    mFriendDao.deleteAll();
 
-                                LinearLayoutManager layoutManager
-                                        = new LinearLayoutManager(getContext());
-                                mRecyclerView.setLayoutManager(layoutManager);
+                                    LoadFromDBTask loadFromDBTask = new LoadFromDBTask();
+                                    loadFromDBTask.execute();
 
-                                MainAdapter mainAdapter = new MainAdapter(getContext(), mFriendsList, mItemClickListener);
-                                mRecyclerView.setAdapter(mainAdapter);
+                                    friendsList = mDataManager.getFriendListFromDb();
 
-                                mSwipeRefreshLayout.setRefreshing(false);
- //                           }
+                                    mFriendsList = new ArrayList<>(response.body().getResponse().getItems());
 
-                        } catch (NullPointerException e) {
-                            Log.e(TAG, e.toString());
+    //                            ((MainActivity) getActivity())
+    //                                    .setActionBarTitle(mTitleApp);
+    //                            ((MainActivity) getActivity())
+    //                                    .setActionBarImage(mTitleImageURL);
+
+                   /*                 LinearLayoutManager layoutManager
+                                            = new LinearLayoutManager(getContext());
+                                    mRecyclerView.setLayoutManager(layoutManager);
+
+                                    MainAdapter mainAdapter = new MainAdapter(getContext(), mFriendsList, mItemClickListener);
+                                    mRecyclerView.setAdapter(mainAdapter);
+
+                                    mSwipeRefreshLayout.setRefreshing(false);*/
+     //                           }
+
+                            } catch (NullPointerException e) {
+                                Log.e(TAG, e.toString());
+                            }
                         }
-                    }
-                    @Override
-                    public void onFailure(Call<FriendsListRes> call, Throwable t) {
-                        Log.e(TAG, t.toString());
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<FriendsListRes> call, Throwable t) {
+                            Log.e(TAG, t.toString());
+                        }
+                    });
+        } else {
+            Toast.makeText(getContext(),
+                    "Нет подключения!", Toast.LENGTH_SHORT).show();
+            LoadFromDBTask loadFromDBTask = new LoadFromDBTask();
+            loadFromDBTask.execute();
+        }
 
     }
 
@@ -184,6 +201,36 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         loadFriends();
      //   mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    class LoadFromDBTask extends AsyncTask<Void, Void, Void> {
+        List<Friend> mFriendsList;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            mFriendsList = mDataManager.getFriendListFromDb();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(getContext());
+            mRecyclerView.setLayoutManager(layoutManager);
+
+            MainAdapter mainAdapter = new MainAdapter(getContext(), mFriendsList, mItemClickListener);
+            mRecyclerView.setAdapter(mainAdapter);
+
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
 }
