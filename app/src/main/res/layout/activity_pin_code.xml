@@ -31,16 +31,6 @@
             android:id="@+id/second_value"
             style="@style/PinEditText"/>
 
-        <TextView
-            android:id="@+id/third_label"
-            android:layout_marginTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/third_value"
-            style="@style/PinEditText"/>
-
     </LinearLayout>
 
 </FrameLayout>

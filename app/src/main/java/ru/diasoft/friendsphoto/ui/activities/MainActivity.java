@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
                 logout();
                 break;
         }
+        onBackPressed();
         return true;
     }
 
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
             getSupportActionBar().setDisplayHomeAsUpEnabled(back);
+            getSupportActionBar().setHomeButtonEnabled(back);
         }
     }
 }
