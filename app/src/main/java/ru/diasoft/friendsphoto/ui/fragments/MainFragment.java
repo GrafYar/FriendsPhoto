@@ -133,17 +133,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     LoadFromDBTask loadFromDBTask = new LoadFromDBTask(getActivity(), mItemClickListener);
                                     loadFromDBTask.execute();
 
-                                    friendsList = mDataManager.getFriendListFromDb();
-
-
-                   /*                 LinearLayoutManager layoutManager
-                                            = new LinearLayoutManager(getContext());
-                                    mRecyclerView.setLayoutManager(layoutManager);
-
-                                    MainAdapter mainAdapter = new MainAdapter(getContext(), mFriendsList, mItemClickListener);
-                                    mRecyclerView.setAdapter(mainAdapter);
-
-                                    mSwipeRefreshLayout.setRefreshing(false);*/
                                 }
 
                             } catch (NullPointerException e) {

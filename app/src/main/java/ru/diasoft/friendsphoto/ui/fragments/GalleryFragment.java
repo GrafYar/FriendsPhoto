@@ -95,19 +95,9 @@ public class GalleryFragment extends Fragment {
                     @Override
                     public void onResponse(Call<GalleryListRes> call, Response<GalleryListRes> response) {
                         try {
-                            if (response.code() != 200 || response.body().getResponse() == null) {
-
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                startActivityForResult(intent, REQUEST_CODE);
+                            if(response.body()!=null){
+                                mGalleryList = new ArrayList<>(response.body().getResponse().getItems());
                             }
-
-                            mGalleryList = new ArrayList<>(response.body().getResponse().getItems());
-
-
-//                            ((MainActivity) getActivity())
-//                                    .setActionBarTitle(mTitleApp);
-//                            ((MainActivity) getActivity())
-//                                    .setActionBarImage(mTitleImageURL);
 
                             GridLayoutManager layoutManager
                                     = new GridLayoutManager(getContext(),2);

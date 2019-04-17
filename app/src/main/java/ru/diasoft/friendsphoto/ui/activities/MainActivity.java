@@ -42,12 +42,21 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mDataManager = DataManager.getInstance(this);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setTitle(R.string.app_title);
-        }
+        setActionBarTitle(getString(R.string.app_title), false);
 
         loadData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setActionBarTitle(getString(R.string.app_title), false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -94,10 +103,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment).addToBackStack(null).commit();
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(fullName);
-        }
+        setActionBarTitle(fullName, true);
     }
 
     @Override
@@ -106,5 +112,12 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
         Intent intent = new Intent(this, PhotoGalleryActivity.class);
         intent.putExtra(ConstantManager.PARCELABLE_KEY, photoDTO);
         startActivity(intent);
+    }
+
+    public void setActionBarTitle(String title, boolean back) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(back);
+        }
     }
 }
