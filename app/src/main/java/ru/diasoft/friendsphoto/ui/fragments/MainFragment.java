@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -14,8 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
+import android.webkit.CookieManager;
+import android.webkit.ValueCallback;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +35,8 @@ import ru.diasoft.friendsphoto.network.services.RetrofitService;
 import ru.diasoft.friendsphoto.storage.models.Friend;
 import ru.diasoft.friendsphoto.storage.models.FriendDao;
 import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
+import ru.diasoft.friendsphoto.ui.activities.MainActivity;
+import ru.diasoft.friendsphoto.ui.activities.StartActivity;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 import ru.diasoft.friendsphoto.utils.NetworkStatusChecker;
 
@@ -42,10 +49,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private RecyclerView mRecyclerView;
     private static final int REQUEST_CODE = 100;
     private DataManager mDataManager;
-    private ArrayList<FriendsItemRes> mFriendsList;
     private MainAdapter.ViewHolder.ItemClickListener mItemClickListener;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FriendDao mFriendDao;
+    ValueCallback<Boolean> mValueCallback;
 
     public MainFragment() {
         // Required empty public constructor
@@ -101,20 +108,16 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             RetrofitService.getInstance()
                     .getJSONApi()
-                 //   .getFriendsJson("5.59","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
-                //    .getFriendsJson("5.52","3325c48142a670e42db0fcc817d7fd46351d5e5511951214bac6cb77c70d31af97c0caa0f0ab6c88bd1f2")
+                   // .getFriendsJson("5.59","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506", fields) //неверный
                     .getFriendsJson("5.59",token, fields)
                     .enqueue(new Callback<FriendsListRes>() {
                         @Override
                         public void onResponse(Call<FriendsListRes> call, Response<FriendsListRes> response) {
                             try {
-                               // if (response.code() != 200 || response.body().getResponse() == null) {
-                               /* if (response.body().getResponse() == null) {
-                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                    startActivityForResult(intent, REQUEST_CODE);
-
-                                }*/
-    //                            else {
+                                if (response.code() != 200 || response.body().getResponse() == null) {
+                                    logout();
+                                }
+                                else {
 
                                     List<Friend> allFriends = new ArrayList<>();
 
@@ -127,17 +130,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 //                                    mFriendDao.deleteAll();
 
-                                    LoadFromDBTask loadFromDBTask = new LoadFromDBTask();
+                                    LoadFromDBTask loadFromDBTask = new LoadFromDBTask(getActivity(), mItemClickListener);
                                     loadFromDBTask.execute();
 
                                     friendsList = mDataManager.getFriendListFromDb();
 
-                                    mFriendsList = new ArrayList<>(response.body().getResponse().getItems());
-
-    //                            ((MainActivity) getActivity())
-    //                                    .setActionBarTitle(mTitleApp);
-    //                            ((MainActivity) getActivity())
-    //                                    .setActionBarImage(mTitleImageURL);
 
                    /*                 LinearLayoutManager layoutManager
                                             = new LinearLayoutManager(getContext());
@@ -147,7 +144,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     mRecyclerView.setAdapter(mainAdapter);
 
                                     mSwipeRefreshLayout.setRefreshing(false);*/
-     //                           }
+                                }
 
                             } catch (NullPointerException e) {
                                 Log.e(TAG, e.toString());
@@ -161,7 +158,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         } else {
             Toast.makeText(getContext(),
                     "Нет подключения!", Toast.LENGTH_SHORT).show();
-            LoadFromDBTask loadFromDBTask = new LoadFromDBTask();
+            LoadFromDBTask loadFromDBTask = new LoadFromDBTask(getActivity(), mItemClickListener);
             loadFromDBTask.execute();
         }
 
@@ -174,7 +171,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             if (resultCode == Activity.RESULT_OK) {
                 String token = data.getStringExtra(LoginActivity.ACCESS_TOKEN);
                 if (token.equals(ACCESS_DENIED)) {
-                    getActivity().finish();
+                    if (getActivity()!= null) {
+                        getActivity().finish();
+                    }
                 }
                 else {
                     Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
@@ -187,8 +186,10 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        mRecyclerView = getView().findViewById(R.id.friends_list);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        if (getView() != null) {
+            mRecyclerView = getView().findViewById(R.id.friends_list);
+        }
     }
 
     @Override
@@ -203,8 +204,18 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
      //   mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    class LoadFromDBTask extends AsyncTask<Void, Void, Void> {
-        List<Friend> mFriendsList;
+    static class LoadFromDBTask extends AsyncTask<Void, Void, Void> {
+        private List<Friend> mFriendsList;
+        private MainAdapter.ViewHolder.ItemClickListener mItemClickListener;
+
+        private WeakReference<FragmentActivity> activityReference;
+
+        // only retain a weak reference to the activity
+        LoadFromDBTask(FragmentActivity context, MainAdapter.ViewHolder.ItemClickListener itemClickListener) {
+            activityReference = new WeakReference<>(context);
+            mItemClickListener = itemClickListener;
+        }
+
 
         @Override
         protected void onPreExecute() {
@@ -213,7 +224,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         @Override
         protected Void doInBackground(Void... params) {
-
+            DataManager mDataManager = DataManager.getInstance(activityReference.get());
             mFriendsList = mDataManager.getFriendListFromDb();
 
             return null;
@@ -222,14 +233,34 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            LinearLayoutManager layoutManager
-                    = new LinearLayoutManager(getContext());
-            mRecyclerView.setLayoutManager(layoutManager);
+            FragmentActivity activity = activityReference.get();
+            if (activity == null || activity.isFinishing()) return;
 
-            MainAdapter mainAdapter = new MainAdapter(getContext(), mFriendsList, mItemClickListener);
-            mRecyclerView.setAdapter(mainAdapter);
+            RecyclerView recyclerView = activity.findViewById(R.id.friends_list);
+            SwipeRefreshLayout mSwipeRefreshLayout = activity.findViewById(R.id.swipe_refresh_layout);
+
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(activity);
+            recyclerView.setLayoutManager(layoutManager);
+
+            MainAdapter mainAdapter = new MainAdapter(activity, mFriendsList, mItemClickListener);
+            recyclerView.setAdapter(mainAdapter);
 
             mSwipeRefreshLayout.setRefreshing(false);
+
+        }
+    }
+
+    public void logout() {
+        mDataManager.getPreferencesManager().saveUserToken(null);
+        mDataManager.getPreferencesManager().saveUserPinCode(null);
+        mDataManager.getDaoSession().getFriendDao().deleteAll();
+        android.webkit.CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookies(mValueCallback);
+        Intent intent = new Intent(getContext(), StartActivity.class);
+        startActivity(intent);
+        if(getActivity() != null) {
+            getActivity().finish();
         }
     }
 

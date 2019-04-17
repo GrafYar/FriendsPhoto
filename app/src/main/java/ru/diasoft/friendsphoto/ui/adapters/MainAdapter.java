@@ -46,8 +46,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
                 .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
                 .error(mContext.getResources().getDrawable(R.drawable.camera_50))
                 .into(holder.mFriendImage);
-        String fullName = item.getFirstName() + " " + item.getLastName();
-        holder.mFriendName.setText(fullName);
+        holder.mFullName = item.getFirstName() + " " + item.getLastName();
+        holder.mFriendName.setText(holder.mFullName);
     }
 
     @Override
@@ -59,6 +59,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
         @BindView(R.id.friend_image) CircleImageView mFriendImage;
         @BindView(R.id.friend_name) TextView mFriendName;
         int mId;
+        String mFullName;
         private ItemClickListener mItemClickListener;
 
         private ViewHolder(View itemView, ItemClickListener itemClickListener) {
@@ -71,12 +72,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
         @Override
         public void onClick(View v) {
             if(mItemClickListener!= null){
-                mItemClickListener.onItemClickListener(getAdapterPosition(), mId);
+                mItemClickListener.onItemClickListener(getAdapterPosition(), mId, mFullName);
             }
         }
 
         public interface ItemClickListener {
-            void onItemClickListener (int position, int id);
+            void onItemClickListener (int position, int id, String fullName);
         }
     }
 }

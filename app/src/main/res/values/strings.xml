@@ -21,5 +21,7 @@
     <string name="repeat_create_pin">Повторите новый PIN</string>
     <string name="enter_pin">Введите PIN</string>
     <string name="enter_btn">Вход</string>
+    <string name="action_logout">Выйти</string>
+    <string name="app_title">Фото друга</string>
 
 </resources>
