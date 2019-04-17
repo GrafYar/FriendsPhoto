@@ -7,7 +7,7 @@
     <string name="client_id">6946108</string>
     <string name="display">page</string>
     <string name="redirect_uri">https://oauth.vk.com/blank.html</string>
-    <string name="scope">friends</string>
+    <string name="scope">friends,scope</string>
     <string name="response_type">token</string>
     <string name="version">5.52</string>
 
@@ -16,5 +16,10 @@
     <string name="title_activity_photo_gallery">PhotoGalleryActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="create_pin">Введите новый PIN</string>
+    <string name="repeat_create_pin">Повторите новый PIN</string>
+    <string name="enter_pin">Введите PIN</string>
+    <string name="enter_btn">Вход</string>
 
 </resources>

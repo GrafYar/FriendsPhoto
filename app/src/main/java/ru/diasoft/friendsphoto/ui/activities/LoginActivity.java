@@ -36,6 +36,12 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
     private WebView webView;
 
 
+
+    private static void startActivity(Context context, String pinCodeMode) {
+        Intent intent = new Intent(context, PinCodeActivity.class);
+        context.startActivity(intent);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -9,6 +9,8 @@ public class PreferencesManager {
 
     private SharedPreferences mSharedPreferences;
     private static final String AUTH_TOKEN = ConstantManager.AUTH_TOKEN;
+    private static final String AUTH_PINCODE = ConstantManager.AUTH_PINCODE;
+
 
     public PreferencesManager() {
         this.mSharedPreferences = FriendsPhotoApplication.getSharedPreferences();
@@ -21,6 +23,16 @@ public class PreferencesManager {
     }
 
     public String loadUserToken () {
-        return mSharedPreferences.getString(ConstantManager.AUTH_TOKEN,"null");
+        return mSharedPreferences.getString(ConstantManager.AUTH_TOKEN,null);
+    }
+
+    public void saveUserPinCode (String pinCode) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(AUTH_PINCODE, pinCode);
+        editor.apply();
+    }
+
+    public String loadUserPinCode () {
+        return mSharedPreferences.getString(ConstantManager.AUTH_PINCODE,null);
     }
 }

@@ -97,18 +97,18 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 .getJSONApi()
              //   .getFriendsJson("5.59","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
             //    .getFriendsJson("5.52","3325c48142a670e42db0fcc817d7fd46351d5e5511951214bac6cb77c70d31af97c0caa0f0ab6c88bd1f2")
-                .getFriendsJson("5.52",token, fields)
+                .getFriendsJson("5.59",token, fields)
                 .enqueue(new Callback<FriendsListRes>() {
                     @Override
                     public void onResponse(Call<FriendsListRes> call, Response<FriendsListRes> response) {
                         try {
                            // if (response.code() != 200 || response.body().getResponse() == null) {
-                            if (response.body().getResponse() == null) {
+                           /* if (response.body().getResponse() == null) {
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivityForResult(intent, REQUEST_CODE);
 
-                            }
-                            else {
+                            }*/
+//                            else {
 
                                 List<Friend> allFriends = new ArrayList<>();
 
@@ -136,7 +136,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                 mRecyclerView.setAdapter(mainAdapter);
 
                                 mSwipeRefreshLayout.setRefreshing(false);
-                            }
+ //                           }
 
                         } catch (NullPointerException e) {
                             Log.e(TAG, e.toString());

@@ -25,6 +25,8 @@ public class FriendsPhotoApplication extends Application {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "freindsphoto-db");
         Database db = helper.getWritableDb();
         sDaoSession = new DaoMaster(db).newSession();
+
+        
     }
 
     @Override
