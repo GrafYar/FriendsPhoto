@@ -17,6 +17,9 @@ import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.managers.DataManager;
 import ru.diasoft.friendsphoto.network.resources.GalleryItemRes;
 
+/**
+ * Adapter for friends photos
+ */
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder>{
 
     private Context mContext;
@@ -65,9 +68,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
                                 .into(holder.mGalleryImage, new Callback() {
                                     @Override
                                     public void onSuccess() {
-
                                     }
-
                                     @Override
                                     public void onError() {
                                         Log.d("123", " Can not fetch image");
@@ -104,6 +105,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         return mGalleryList.size();
     }
 
+    /**
+     * ViewHolder for Gallery adapter
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.gallery_img) ImageView mGalleryImage;
         int mId;

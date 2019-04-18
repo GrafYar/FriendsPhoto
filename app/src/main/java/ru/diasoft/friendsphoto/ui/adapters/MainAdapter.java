@@ -14,6 +14,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.diasoft.friendsphoto.storage.models.Friend;
 
+/**
+ * Main adapter for list of friends
+ */
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
     private Context mContext;
     private List<Friend> mFriendsList;
@@ -49,6 +52,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
         return mFriendsList.size();
     }
 
+    /**
+     * ViewHolder for Main adapter
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.friend_image) CircleImageView mFriendImage;
         @BindView(R.id.friend_name) TextView mFriendName;

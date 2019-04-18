@@ -2,22 +2,15 @@ package ru.diasoft.friendsphoto.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.managers.DataManager;
 import ru.diasoft.friendsphoto.network.resources.GalleryItemRes;
@@ -28,14 +21,15 @@ import ru.diasoft.friendsphoto.ui.fragments.GalleryFragment;
 import ru.diasoft.friendsphoto.ui.fragments.MainFragment;
 import ru.diasoft.friendsphoto.utils.ConstantManager;
 
-
+/**
+ *
+ */
 public class MainActivity extends AppCompatActivity implements MainAdapter.ViewHolder.ItemClickListener,
         GalleryAdapter.ViewHolder.ItemGalleryClickListener{
 
     private static final String TAG = ConstantManager.TAG_PREFIX + " MainActivity";
     private DataManager mDataManager;
     ValueCallback<Boolean> mValueCallback;
-    private CoordinatorLayout mCoordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
         return true;
     }
 
+    /**
+     * Deletes token, db, pincode, coockies and starts StartActivity
+     */
     public void logout() {
         mDataManager.getPreferencesManager().saveUserToken(null);
         mDataManager.getPreferencesManager().saveUserPinCode(null);

@@ -1,33 +1,22 @@
 package ru.diasoft.friendsphoto.ui.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.ValueCallback;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.managers.DataManager;
-import ru.diasoft.friendsphoto.utils.ConstantManager;
 
+/**
+ * Class for entering or creating pin code for fast auth
+ */
 public class PinCodeActivity extends AppCompatActivity {
 
     @BindView(R.id.first_label) TextView mFirstLabel;
@@ -36,24 +25,12 @@ public class PinCodeActivity extends AppCompatActivity {
     @BindView(R.id.second_value) EditText mSecondValue;
     DataManager mDataManager;
     String mPinCode;
-    ValueCallback<Boolean> mValueCallback;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pin_code);
         ButterKnife.bind(this);
- /*       android.webkit.CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.removeAllCookies(mValueCallback);*/
-       /* android.webkit.CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.removeAllCookies(new ValueCallback<Boolean>() {
-            // a callback which is executed when the cookies have been removed
-            @Override
-            public void onReceiveValue(Boolean aBoolean) {
-                Log.d("Cookies", "Cookie removed: " + aBoolean);
-            }
-        });*/
 
         mDataManager = DataManager.getInstance(this);
         mPinCode = mDataManager.getPreferencesManager().loadUserPinCode();
@@ -65,6 +42,9 @@ public class PinCodeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates new pin code for new user
+     */
     private void createPinCode() {
         mFirstLabel.setVisibility(View.VISIBLE);
         mFirstLabel.setText(getString(R.string.create_pin));
@@ -74,6 +54,7 @@ public class PinCodeActivity extends AppCompatActivity {
         mSecondLabel.setText(getString(R.string.repeat_create_pin));
         mSecondValue.setVisibility(View.VISIBLE);
 
+        // Check is full first edit text
         mFirstValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
@@ -98,7 +79,7 @@ public class PinCodeActivity extends AppCompatActivity {
                 }
             }
         });
-
+        // Check is full second edit text
         mSecondValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
@@ -125,6 +106,9 @@ public class PinCodeActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Checks existing pin code
+     */
     private void checkPinCode() {
         mFirstLabel.setVisibility(View.VISIBLE);
         mFirstLabel.setText(getString(R.string.enter_pin));

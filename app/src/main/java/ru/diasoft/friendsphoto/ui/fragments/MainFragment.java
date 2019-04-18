@@ -41,9 +41,7 @@ import ru.diasoft.friendsphoto.utils.NetworkStatusChecker;
  */
 public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
-    private static final String TAG =  " MainFragment";
-    private static final String ACCESS_DENIED = "access_denied";
-    private static final int REQUEST_CODE = 100;
+    private static final String  TAG = ConstantManager.TAG_PREFIX + " MainFragment";
     private DataManager mDataManager;
     private MainAdapter.ViewHolder.ItemClickListener mItemClickListener;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -188,7 +186,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     /**
-     * Deletes token, pincode, coockies and starts StartActivity
+     * Deletes token, db, pincode, coockies and starts StartActivity
      */
     public void logout() {
         mDataManager.getPreferencesManager().saveUserToken(null);

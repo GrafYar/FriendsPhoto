@@ -40,7 +40,7 @@ import ru.diasoft.friendsphoto.utils.ConstantManager;
  */
 public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String TAG =  " GalleryFragment";
+    private static final String TAG = ConstantManager.TAG_PREFIX + " GalleryFragment";
     private DataManager mDataManager;
     private RecyclerView mRecyclerView;
     private ArrayList<GalleryItemRes> mGalleryList;

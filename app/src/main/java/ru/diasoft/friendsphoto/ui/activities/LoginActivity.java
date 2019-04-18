@@ -2,7 +2,6 @@ package ru.diasoft.friendsphoto.ui.activities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -12,13 +11,14 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import java.net.URI;
-
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.utils.AuthorizationListener;
 import ru.diasoft.friendsphoto.utils.ConstantManager;
 
+/**
+ * Class to login user in oauth
+ */
 public class LoginActivity extends AppCompatActivity implements AuthorizationListener {
 
     public static final String ACCESS_TOKEN = "access_token";
@@ -32,11 +32,6 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
     private String mVersion;
     private String mAuthUrlTemplate;
     private WebView webView;
-
-    private static void startActivity(Context context, String pinCodeMode) {
-        Intent intent = new Intent(context, PinCodeActivity.class);
-        context.startActivity(intent);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
     protected void onResume() {
         super.onResume();
         onAuthStarted();
+        // Format url to full
         String url = String.format(mAuthUrlTemplate, mClientId, "&", mDisplay, "&", mRedirectUri, "&", mScope, "&", mResponseType, "&", mVersion);
         URI uri = URI.create(url);
         webView.setWebViewClient(new OAuthWebClient(this));
@@ -95,6 +91,12 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
             super.onPageStarted(view, url, favicon);
         }
 
+        /**
+         * Looks was the request succesfull
+         * @param view - WebView
+         * @param url - full url
+         * @return boolean
+         */
         @SuppressWarnings("deprecation") @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.startsWith(view.getResources().getString(R.string.redirect_uri))) {
@@ -109,6 +111,12 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
             return false;
         }
 
+        /**
+         * Looks was the request succesfull
+         * @param view - WebView
+         * @param request - full url
+         * @return boolean
+         */
         @TargetApi(Build.VERSION_CODES.N) @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             String url = request.getUrl().toString();
@@ -130,6 +138,11 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
         }
     }
 
+    /**
+     * Returns token from full response
+     * @param response full response string
+     * @return user token
+     */
     private String getAccessToken(String response) {
         String[] params = response.split("&");
         return params[0].split("=")[1];
