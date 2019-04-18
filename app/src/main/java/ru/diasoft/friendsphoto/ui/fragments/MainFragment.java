@@ -50,10 +50,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private FriendDao mFriendDao;
     ValueCallback<Boolean> mValueCallback;
 
-/*    public MainFragment() {
-        // Required empty public constructor
-    }*/
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -61,14 +57,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             mItemClickListener = (MainAdapter.ViewHolder.ItemClickListener) context;
         }
     }
-
-/*    public static MainFragment newInstance(String param1, String param2) {
-        MainFragment fragment = new MainFragment();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
-    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

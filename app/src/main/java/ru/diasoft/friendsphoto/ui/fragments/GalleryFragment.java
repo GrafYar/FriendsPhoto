@@ -48,10 +48,6 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private String mId;
     private GalleryAdapter.ViewHolder.ItemGalleryClickListener mItemGalleryClickListener;
 
-/*    public GalleryFragment() {
-        // Required empty public constructor
-    }*/
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

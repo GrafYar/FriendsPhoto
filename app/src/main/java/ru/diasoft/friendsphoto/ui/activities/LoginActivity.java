@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,11 +13,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import java.io.IOException;
 import java.net.URI;
 
 import ru.diasoft.friendsphoto.R;
-import ru.diasoft.friendsphoto.network.services.AuthorizationListener;
+import ru.diasoft.friendsphoto.utils.AuthorizationListener;
+import ru.diasoft.friendsphoto.utils.ConstantManager;
 
 public class LoginActivity extends AppCompatActivity implements AuthorizationListener {
 
@@ -45,12 +44,12 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
         setContentView(R.layout.activity_login);
         webView = findViewById(R.id.login_web_view);
 
-        mClientId = getString(R.string.client_id);
-        mDisplay = getString(R.string.display);
+        mClientId = ConstantManager.CLIENT_ID;
+        mDisplay = ConstantManager.DISPLAY;
         mRedirectUri = getString(R.string.redirect_uri);
-        mScope = getString(R.string.scope);
-        mResponseType = getString(R.string.response_type);
-        mVersion = getString(R.string.version);
+        mScope = ConstantManager.SCOPE;
+        mResponseType = ConstantManager.RESPONSE_TYPE;
+        mVersion = ConstantManager.VERSION;
         mAuthUrlTemplate = getString(R.string.auth_url);
     }
 

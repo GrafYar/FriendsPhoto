@@ -7,7 +7,8 @@ import android.os.Bundle;
  */
 public interface ConstantManager {
 
-    int API_ID = 6946108;
+    String CLIENT_ID = "6946108";
+    String DISPLAY = "page";
     String SCOPE = "friends,scope";
     String RESPONSE_TYPE = "token";
     String VERSION = "5.59";

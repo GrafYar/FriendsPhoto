@@ -1,4 +1,4 @@
-package ru.diasoft.friendsphoto.network;
+package ru.diasoft.friendsphoto.utils;
 
 import android.content.Context;
 

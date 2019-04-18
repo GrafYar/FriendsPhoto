@@ -4,7 +4,7 @@ import android.content.Context;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
-import ru.diasoft.friendsphoto.network.PicassoCache;
+import ru.diasoft.friendsphoto.utils.PicassoCache;
 import ru.diasoft.friendsphoto.storage.models.DaoSession;
 import ru.diasoft.friendsphoto.storage.models.Friend;
 import ru.diasoft.friendsphoto.utils.FriendsPhotoApplication;

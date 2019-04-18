@@ -1,4 +1,4 @@
-package ru.diasoft.friendsphoto.network.services;
+package ru.diasoft.friendsphoto.utils;
 
 public interface AuthorizationListener {
     void onAuthStarted();
