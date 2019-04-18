@@ -1,6 +1,8 @@
 package ru.diasoft.friendsphoto.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -109,10 +111,11 @@ public class PhotoGalleryActivity extends AppCompatActivity {
             }
         });
 
+        setActionBarTitle(getString(R.string.photo_title),true);
+
         PhotoDTO photoDTO = getIntent().getParcelableExtra(ConstantManager.PARCELABLE_KEY);
 
         Picasso.with(this)
-               // .load(photoDTO.getPhoto())
                 .load(getMaxImage(photoDTO))
                 .placeholder(this.getResources().getDrawable(R.drawable.camera_50))
                 .error(this.getResources().getDrawable(R.drawable.camera_50))
@@ -199,7 +202,7 @@ public class PhotoGalleryActivity extends AppCompatActivity {
 
     public void setActionBarTitle(String title, boolean bool) {
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getString(R.string.photo_title));
+            getSupportActionBar().setTitle(title);
             getSupportActionBar().setDisplayHomeAsUpEnabled(bool);
             getSupportActionBar().setHomeButtonEnabled(bool);
         }

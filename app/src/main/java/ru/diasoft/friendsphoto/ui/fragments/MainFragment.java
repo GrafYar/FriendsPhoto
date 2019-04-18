@@ -1,7 +1,6 @@
 package ru.diasoft.friendsphoto.ui.fragments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,11 +20,9 @@ import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,7 +34,6 @@ import ru.diasoft.friendsphoto.network.services.RetrofitService;
 import ru.diasoft.friendsphoto.storage.models.Friend;
 import ru.diasoft.friendsphoto.storage.models.FriendDao;
 import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
-import ru.diasoft.friendsphoto.ui.activities.MainActivity;
 import ru.diasoft.friendsphoto.ui.activities.StartActivity;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 import ru.diasoft.friendsphoto.utils.NetworkStatusChecker;

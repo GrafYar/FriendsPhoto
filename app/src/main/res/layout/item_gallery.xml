@@ -10,7 +10,8 @@
     android:layout_marginTop="@dimen/spacing_8"
     android:layout_marginEnd="@dimen/spacing_8"
     android:layout_marginStart="@dimen/spacing_8"
-    android:layout_marginBottom="@dimen/spacing_8">
+    android:layout_marginBottom="@dimen/spacing_8"
+    android:background="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/gallery_img"

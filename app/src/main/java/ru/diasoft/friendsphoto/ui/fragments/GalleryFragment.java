@@ -2,11 +2,13 @@ package ru.diasoft.friendsphoto.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,13 +35,14 @@ import ru.diasoft.friendsphoto.ui.adapters.GalleryAdapter;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 import ru.diasoft.friendsphoto.utils.ConstantManager;
 
-public class GalleryFragment extends Fragment {
+public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final int REQUEST_CODE = 200;
     private static final String TAG =  " GalleryFragment";
     private DataManager mDataManager;
     private RecyclerView mRecyclerView;
     private ArrayList<GalleryItemRes> mGalleryList;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private String mId;
     private GalleryAdapter.ViewHolder.ItemGalleryClickListener mItemGalleryClickListener;
 
@@ -63,6 +66,7 @@ public class GalleryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mId = Integer.toString(bundle.getInt(ConstantManager.FRIEND_ID));
@@ -70,14 +74,26 @@ public class GalleryFragment extends Fragment {
             Toast.makeText(getActivity(), mId, Toast.LENGTH_SHORT).show();
         }
         mDataManager = DataManager.getInstance(getContext());
+        mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_photo_layout);
+        mSwipeRefreshLayout.setColorSchemeColors(
+                Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
         loadGallery();
-        return inflater.inflate(R.layout.fragment_gallery, container, false);
+
+        return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecyclerView = getView().findViewById(R.id.friends_gallery);
+        if (getView() != null) {
+            mRecyclerView = getView().findViewById(R.id.friends_gallery);
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void loadGallery() {
@@ -85,6 +101,7 @@ public class GalleryFragment extends Fragment {
         //   mRecyclerView.setAdapter(new MainAdapter());
         String token = mDataManager.getPreferencesManager().loadUserToken();
         String albumId = "profile";
+        mSwipeRefreshLayout.setRefreshing(true);
 
         RetrofitService.getInstance()
                 .getJSONApi()
@@ -105,6 +122,8 @@ public class GalleryFragment extends Fragment {
 
                             GalleryAdapter galleryAdapter = new GalleryAdapter(getContext(), mGalleryList, mItemGalleryClickListener);
                             mRecyclerView.setAdapter(galleryAdapter);
+
+                            mSwipeRefreshLayout.setRefreshing(false);
 
                         } catch (NullPointerException e) {
                             Log.e(TAG, e.toString());
