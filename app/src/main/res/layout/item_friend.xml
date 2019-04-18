@@ -24,18 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Друг"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_size_16"
         android:layout_gravity="center_vertical"/>
-    
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_height_2"
-        android:background="@color/grey_light"
-        android:layout_marginStart="72dp"/>
+
     </LinearLayout>
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/layout_height_1"
         android:background="@color/grey_light"
-        android:layout_marginStart="72dp"/>
+        android:layout_marginStart="@dimen/spacing_72"/>
 </LinearLayout>

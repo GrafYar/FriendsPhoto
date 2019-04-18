@@ -115,11 +115,11 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
         startActivity(intent);
     }
 
-    public void setActionBarTitle(String title, boolean back) {
+    public void setActionBarTitle(String title, boolean bool) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(back);
-            getSupportActionBar().setHomeButtonEnabled(back);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(bool);
+            getSupportActionBar().setHomeButtonEnabled(bool);
         }
     }
 }

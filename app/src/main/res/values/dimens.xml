@@ -6,4 +6,10 @@
     <dimen name="layout_width_40">40dp</dimen>
     <dimen name="layout_height_40">40dp</dimen>
     <dimen name="layout_height_2">2dp</dimen>
+    <dimen name="elevation_5">5dp</dimen>
+    <dimen name="corner_radius_2">2dp</dimen>
+    <dimen name="layout_height_172">172dp</dimen>
+    <dimen name="spacing_72">72dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="layout_height_1">1dp</dimen>
 </resources>

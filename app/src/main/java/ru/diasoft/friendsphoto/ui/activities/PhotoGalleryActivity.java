@@ -101,7 +101,6 @@ public class PhotoGalleryActivity extends AppCompatActivity {
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.photo_gallery);
 
-
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,8 +108,6 @@ public class PhotoGalleryActivity extends AppCompatActivity {
                 toggle();
             }
         });
-
-
 
         PhotoDTO photoDTO = getIntent().getParcelableExtra(ConstantManager.PARCELABLE_KEY);
 
@@ -198,5 +195,13 @@ public class PhotoGalleryActivity extends AppCompatActivity {
             return photoDTO.getPhoto75();
         }
         return null;
+    }
+
+    public void setActionBarTitle(String title, boolean bool) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.photo_title));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(bool);
+            getSupportActionBar().setHomeButtonEnabled(bool);
+        }
     }
 }

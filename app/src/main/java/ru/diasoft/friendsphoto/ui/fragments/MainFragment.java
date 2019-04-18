@@ -1,6 +1,7 @@
 package ru.diasoft.friendsphoto.ui.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
@@ -52,6 +54,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private MainAdapter.ViewHolder.ItemClickListener mItemClickListener;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FriendDao mFriendDao;
+    ProgressBar mProgressBar;
     ValueCallback<Boolean> mValueCallback;
 
     public MainFragment() {
@@ -88,11 +91,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         mDataManager = DataManager.getInstance(getContext());
         mFriendDao = mDataManager.getDaoSession().getFriendDao();
-        loadFriends();
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeColors(
                   Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        loadFriends();
+
         return rootView;
     }
 
@@ -101,6 +105,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
      //   mRecyclerView.setAdapter(new MainAdapter());
         String token = mDataManager.getPreferencesManager().loadUserToken();
         String fields = "id,first_name,last_name,photo_100,online";
+        mSwipeRefreshLayout.setRefreshing(true);
 
         if(NetworkStatusChecker.isNetworkAvailable(getContext())) {
             //    Fragment fragment = new MainFragment();
@@ -190,7 +195,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         loadFriends();
-     //   mSwipeRefreshLayout.setRefreshing(false);
     }
 
     static class LoadFromDBTask extends AsyncTask<Void, Void, Void> {
@@ -226,7 +230,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             if (activity == null || activity.isFinishing()) return;
 
             RecyclerView recyclerView = activity.findViewById(R.id.friends_list);
-            SwipeRefreshLayout mSwipeRefreshLayout = activity.findViewById(R.id.swipe_refresh_layout);
+            SwipeRefreshLayout swipeRefreshLayout = activity.findViewById(R.id.swipe_refresh_layout);
 
             LinearLayoutManager layoutManager
                     = new LinearLayoutManager(activity);
@@ -235,7 +239,8 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             MainAdapter mainAdapter = new MainAdapter(activity, mFriendsList, mItemClickListener);
             recyclerView.setAdapter(mainAdapter);
 
-            mSwipeRefreshLayout.setRefreshing(false);
+            swipeRefreshLayout.setRefreshing(false);
+
 
         }
     }

@@ -10,6 +10,7 @@
     <string name="scope">friends,scope</string>
     <string name="response_type">token</string>
     <string name="version">5.52</string>
+    <string name="photo_title">Фотография</string>
 
     <string name="auth_url">https://oauth.vk.com/authorize?client_id=%1$s%2$sdisplay=%3$s%4$sredirect_uri=%5$s%6$sscope=%7$s%8$sresponse_type=%9$s%10$sv=%11$s</string>
 
