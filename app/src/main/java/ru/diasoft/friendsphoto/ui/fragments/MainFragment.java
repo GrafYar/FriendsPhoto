@@ -96,11 +96,13 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     } else {
                                         List<Friend> allFriends = new ArrayList<>();
 
+                                        // Adding list of friends from response in friends entity and insert it in db
                                         for (FriendsItemRes friendsItemRes : response.body().getResponse().getItems()) {
                                             allFriends.add(new Friend(friendsItemRes));
                                         }
                                         mFriendDao.insertOrReplaceInTx(allFriends);
 
+                                        //Creating async task for load friends from db
                                         LoadFromDBTask loadFromDBTask = new LoadFromDBTask(getActivity(), mItemClickListener);
                                         loadFromDBTask.execute();
                                     }
