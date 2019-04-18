@@ -118,8 +118,8 @@ public class PhotoGalleryActivity extends AppCompatActivity {
 
         Picasso.with(this)
                 .load(getMaxImage(photoDTO))
-                .placeholder(this.getResources().getDrawable(R.drawable.camera_50))
-                .error(this.getResources().getDrawable(R.drawable.camera_50))
+                .placeholder(this.getResources().getDrawable(R.drawable.camera_400))
+                .error(this.getResources().getDrawable(R.drawable.camera_400))
                 .into((ImageView) mContentView);
     }
 
