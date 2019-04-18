@@ -4,6 +4,9 @@ package ru.diasoft.friendsphoto.network.resources;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * POJO class for retrofit responses of friends
+ */
 public class FriendsItemRes {
 
     @SerializedName("id")

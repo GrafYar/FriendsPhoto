@@ -8,11 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,25 +33,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     @Override
     public GalleryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i){
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_gallery,viewGroup,false);
-        //mContext = viewGroup.getContext();
+
         return new GalleryAdapter.ViewHolder(view, mGalleryList, mItemGalleryClickListener);
     }
     @Override
     public void onBindViewHolder(@NonNull final GalleryAdapter.ViewHolder holder, int i) {
         final GalleryItemRes item = mGalleryList.get(i);
-//        String photo;
 
-     //   holder.mId = item.getId();
-        String s = getMaxImage(item);
-//        Picasso.with(mContext)
-//               // .load(item.getPhoto604())
-//                .load(getMaxImage(item))
-//                .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
-//                .error(mContext.getResources().getDrawable(R.drawable.camera_50))
-//                .into(holder.mGalleryImage);
-
+        // Trying load from cache if can't then load from internet
         DataManager.getInstance(mContext).getPicasso()
-               // .load(item.getPhoto604())
                 .load(getMaxImage(item))
                 .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
                 .error(mContext.getResources().getDrawable(R.drawable.camera_50))
@@ -70,7 +57,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
                     @Override
                     public void onError() {
                         DataManager.getInstance(mContext).getPicasso()
-                                // .load(item.getPhoto604())
                                 .load(getMaxImage(item))
                                 .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
                                 .error(mContext.getResources().getDrawable(R.drawable.camera_50))
@@ -91,7 +77,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
                 });
     }
 
-    public String getMaxImage(GalleryItemRes item) {
+    /**
+     * Returns max image for current object
+     * @param item object of photos
+     * @return max image for current object
+     */
+    private String getMaxImage(GalleryItemRes item) {
         if (item.getPhoto2560()!= null) {
             return item.getPhoto2560();
         } else if (item.getPhoto1280()!= null) {

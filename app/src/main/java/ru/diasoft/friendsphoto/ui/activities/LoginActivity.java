@@ -32,10 +32,7 @@ public class LoginActivity extends AppCompatActivity implements AuthorizationLis
     private String mResponseType;
     private String mVersion;
     private String mAuthUrlTemplate;
-
     private WebView webView;
-
-
 
     private static void startActivity(Context context, String pinCodeMode) {
         Intent intent = new Intent(context, PinCodeActivity.class);

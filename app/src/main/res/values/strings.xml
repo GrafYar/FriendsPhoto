@@ -1,22 +1,17 @@
 <resources>
     <string name="app_name">FriendsPhoto</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="client_id">6946108</string>
     <string name="display">page</string>
     <string name="redirect_uri">https://oauth.vk.com/blank.html</string>
     <string name="scope">friends,scope</string>
     <string name="response_type">token</string>
-    <string name="version">5.52</string>
+    <string name="version">5.59</string>
     <string name="photo_title">Фотография</string>
 
     <string name="auth_url">https://oauth.vk.com/authorize?client_id=%1$s%2$sdisplay=%3$s%4$sredirect_uri=%5$s%6$sscope=%7$s%8$sresponse_type=%9$s%10$sv=%11$s</string>
 
     <string name="title_activity_photo_gallery">PhotoGalleryActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="create_pin">Введите новый PIN</string>
     <string name="repeat_create_pin">Повторите новый PIN</string>

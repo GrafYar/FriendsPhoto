@@ -7,6 +7,9 @@ import retrofit2.http.POST;
 import ru.diasoft.friendsphoto.network.resources.FriendsListRes;
 import ru.diasoft.friendsphoto.network.resources.GalleryListRes;
 
+/**
+ * Interface requests for retrofit
+ */
 public interface RestService {
 
     @POST("method/friends.get?")

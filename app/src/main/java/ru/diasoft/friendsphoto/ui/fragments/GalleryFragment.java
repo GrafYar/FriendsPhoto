@@ -35,9 +35,11 @@ import ru.diasoft.friendsphoto.ui.adapters.GalleryAdapter;
 import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 import ru.diasoft.friendsphoto.utils.ConstantManager;
 
+/**
+ * Fragment to load and show photos from current friend
+ */
 public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int REQUEST_CODE = 200;
     private static final String TAG =  " GalleryFragment";
     private DataManager mDataManager;
     private RecyclerView mRecyclerView;
@@ -46,9 +48,9 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private String mId;
     private GalleryAdapter.ViewHolder.ItemGalleryClickListener mItemGalleryClickListener;
 
-    public GalleryFragment() {
+/*    public GalleryFragment() {
         // Required empty public constructor
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
@@ -64,20 +66,23 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
+
+        // Taking friend id for request
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mId = Integer.toString(bundle.getInt(ConstantManager.FRIEND_ID));
-            Log.d("ID ", mId);
-            Toast.makeText(getActivity(), mId, Toast.LENGTH_SHORT).show();
         }
+
+        //Taking DataManager and initialising Swipe Refresher
         mDataManager = DataManager.getInstance(getContext());
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_photo_layout);
         mSwipeRefreshLayout.setColorSchemeColors(
                 Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
         loadGallery();
 
         return rootView;
@@ -91,49 +96,52 @@ public class GalleryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         }
     }
 
-    @Override
-    public void onRefresh() {
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-
+    /**
+     * Loads photos from VK by retrofit request with params:
+     * Version - version of API VK
+     * Token - key for request
+     * Friend Id - id friend for loading his photo
+     * album id - type of albums to load
+     */
     private void loadGallery() {
 
-        //   mRecyclerView.setAdapter(new MainAdapter());
         String token = mDataManager.getPreferencesManager().loadUserToken();
-        String albumId = "profile";
         mSwipeRefreshLayout.setRefreshing(true);
 
+        // Loading photos by Retrofit
         RetrofitService.getInstance()
                 .getJSONApi()
-                //   .getFriendsJson("5.59","6878d93736e2cb520adc4a97fcbecfa6f60e7cff8eec624c5ac36fe9b5edcca99bef7d8b841120f968506") //неверный
-                //    .getFriendsJson("5.52","3325c48142a670e42db0fcc817d7fd46351d5e5511951214bac6cb77c70d31af97c0caa0f0ab6c88bd1f2")
-                .getGalleryJson("5.59",token, mId, albumId)
+                .getGalleryJson(ConstantManager.VERSION, token, mId, ConstantManager.ALBUM_ID)
                 .enqueue(new Callback<GalleryListRes>() {
                     @Override
-                    public void onResponse(Call<GalleryListRes> call, Response<GalleryListRes> response) {
+                    public void onResponse(@NonNull Call<GalleryListRes> call, @NonNull Response<GalleryListRes> response) {
                         try {
                             if(response.body()!=null){
                                 mGalleryList = new ArrayList<>(response.body().getResponse().getItems());
                             }
-
+                            // Creating layoutManager and gives it to RecyclerView
                             GridLayoutManager layoutManager
                                     = new GridLayoutManager(getContext(),2);
                             mRecyclerView.setLayoutManager(layoutManager);
-
+                            // Creating Adapter and giving it list of photos and ClickListener
                             GalleryAdapter galleryAdapter = new GalleryAdapter(getContext(), mGalleryList, mItemGalleryClickListener);
                             mRecyclerView.setAdapter(galleryAdapter);
-
+                            // Switch of SwipeRefresh
                             mSwipeRefreshLayout.setRefreshing(false);
-
                         } catch (NullPointerException e) {
                             Log.e(TAG, e.toString());
                         }
                     }
                     @Override
-                    public void onFailure(Call<GalleryListRes> call, Throwable t) {
+                    public void onFailure(@NonNull Call<GalleryListRes> call, @NonNull Throwable t) {
                         Log.e(TAG, t.toString());
                     }
                 });
+    }
+
+    @Override
+    public void onRefresh() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

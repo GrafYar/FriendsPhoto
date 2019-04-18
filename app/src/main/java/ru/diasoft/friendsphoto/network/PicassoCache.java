@@ -5,6 +5,9 @@ import android.content.Context;
 import com.squareup.picasso.Picasso;
 import com.jakewharton.picasso.OkHttp3Downloader;
 
+/**
+ * Class for Caching pictures in Picasso
+ */
 public class PicassoCache {
 
     private Context mContext;
@@ -21,7 +24,6 @@ public class PicassoCache {
     }
 
     public Picasso getPicassoInstance() {
-
         if(mPicassoInstance == null) {
             new PicassoCache(mContext);
             return mPicassoInstance;

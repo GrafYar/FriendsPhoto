@@ -6,15 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import ru.diasoft.friendsphoto.R;
-import ru.diasoft.friendsphoto.network.resources.FriendsItemRes;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.diasoft.friendsphoto.storage.models.Friend;
@@ -34,7 +29,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
     @Override
     public MainAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i){
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_friend,viewGroup,false);
-        //mContext = viewGroup.getContext();
         return new ViewHolder(view, mItemClickListener);
     }
     @Override

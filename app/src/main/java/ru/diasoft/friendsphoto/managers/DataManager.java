@@ -1,40 +1,27 @@
 package ru.diasoft.friendsphoto.managers;
 
 import android.content.Context;
-
 import com.squareup.picasso.Picasso;
-
-import org.greenrobot.greendao.database.Database;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import ru.diasoft.friendsphoto.network.PicassoCache;
-import ru.diasoft.friendsphoto.storage.models.DaoMaster;
 import ru.diasoft.friendsphoto.storage.models.DaoSession;
 import ru.diasoft.friendsphoto.storage.models.Friend;
 import ru.diasoft.friendsphoto.utils.FriendsPhotoApplication;
 
+/**
+ * Realizes singleton for single data access point
+ */
 public class DataManager {
 
     private static DataManager INSTANCE = null;
     private PreferencesManager mPreferencesManager;
-
     private DaoSession mDaoSession;
-
-    public Context getContext() {
-        return mContext;
-    }
-
-    private Context mContext;
-
     private Picasso mPicasso;
-
 
     public DataManager(Context context) {
         this.mPreferencesManager = new PreferencesManager();
-        this.mContext = context;
-        this.mPicasso = new PicassoCache(mContext).getPicassoInstance();
+        this.mPicasso = new PicassoCache(context).getPicassoInstance();
         this.mDaoSession = FriendsPhotoApplication.getDaoSession();
     }
 
@@ -53,6 +40,10 @@ public class DataManager {
         return mPicasso;
     }
 
+    /**
+     *Returns list of friends from Data Base
+     * @return List<Friend>
+     */
     public List<Friend> getFriendListFromDb() {
         List<Friend> friendList = new ArrayList<>();
         try {
