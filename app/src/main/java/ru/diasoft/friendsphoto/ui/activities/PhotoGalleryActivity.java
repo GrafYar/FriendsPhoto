@@ -188,12 +188,11 @@ public class PhotoGalleryActivity extends AppCompatActivity {
     }
 
     public String getMaxImage(PhotoDTO photoDTO) {
-//        if (photoDTO.getPhoto2560()!= null) {
-//            return photoDTO.getPhoto2560();
-//        } else if (photoDTO.getPhoto1280()!= null) {
-//            return photoDTO.getPhoto1280();
-//        } else
-            if (photoDTO.getPhoto807()!= null) {
+        if (photoDTO.getPhoto2560()!= null) {
+            return photoDTO.getPhoto2560();
+        } else if (photoDTO.getPhoto1280()!= null) {
+            return photoDTO.getPhoto1280();
+        } else if (photoDTO.getPhoto807()!= null) {
             return photoDTO.getPhoto807();
         } else if (photoDTO.getPhoto604()!= null) {
             return photoDTO.getPhoto604();
@@ -205,6 +204,11 @@ public class PhotoGalleryActivity extends AppCompatActivity {
         return null;
     }
 
+    /**
+     *  Enables back button in action bar and set title
+     * @param title - text to action bar
+     * @param bool - true enables back button in action bar
+     */
     public void setActionBarTitle(String title, boolean bool) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);

@@ -7,7 +7,6 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Unique;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
-
 import ru.diasoft.friendsphoto.network.resources.FriendsItemRes;
 
 @Entity(active = true, nameInDb = "FRIENDS")

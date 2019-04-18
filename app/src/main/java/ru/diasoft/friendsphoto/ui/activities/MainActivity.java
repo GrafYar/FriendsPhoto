@@ -112,6 +112,11 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.ViewH
         startActivity(intent);
     }
 
+    /**
+     *  Enables back button in action bar and set title
+     * @param title - text to action bar
+     * @param bool - true enables back button in action bar
+     */
     public void setActionBarTitle(String title, boolean bool) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
