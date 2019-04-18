@@ -188,8 +188,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             recyclerView.setAdapter(mainAdapter);
             // Switch of SwipeRefresh
             swipeRefreshLayout.setRefreshing(false);
-
-
         }
     }
 
