@@ -78,6 +78,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return rootView;
     }
 
+    /**
+     * Loads photos from VK by retrofit request with params:
+     * Version - version of API VK
+     * Token - key for request
+     * Fields - fields to request from server
+     */
     private void loadFriends() {
         String token = mDataManager.getPreferencesManager().loadUserToken();
         mSwipeRefreshLayout.setRefreshing(true);
