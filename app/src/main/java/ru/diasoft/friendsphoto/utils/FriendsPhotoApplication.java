@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import org.greenrobot.greendao.database.Database;
-
 import ru.diasoft.friendsphoto.storage.models.DaoMaster;
 import ru.diasoft.friendsphoto.storage.models.DaoSession;
 

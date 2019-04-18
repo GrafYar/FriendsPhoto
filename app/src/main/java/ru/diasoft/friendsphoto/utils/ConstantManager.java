@@ -1,13 +1,11 @@
 package ru.diasoft.friendsphoto.utils;
 
-import android.os.Bundle;
-
 /**
  * Interface for constants using in app
  */
 public interface ConstantManager {
 
-    String CLIENT_ID = "6946108";
+    String CLIENT_ID = "6950927";
     String DISPLAY = "page";
     String SCOPE = "friends,scope";
     String RESPONSE_TYPE = "token";

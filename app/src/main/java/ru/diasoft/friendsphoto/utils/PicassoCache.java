@@ -1,7 +1,6 @@
 package ru.diasoft.friendsphoto.utils;
 
 import android.content.Context;
-
 import com.squareup.picasso.Picasso;
 import com.jakewharton.picasso.OkHttp3Downloader;
 

@@ -46,8 +46,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         // Trying load from cache if can't then load from internet
         DataManager.getInstance(mContext).getPicasso()
                 .load(getMaxImage(item))
-                .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
-                .error(mContext.getResources().getDrawable(R.drawable.camera_50))
+                .placeholder(mContext.getResources().getDrawable(R.drawable.camera_400))
+                .error(mContext.getResources().getDrawable(R.drawable.camera_400))
                 .fit()
                 .centerCrop()
                 .networkPolicy(NetworkPolicy.OFFLINE)
@@ -61,8 +61,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
                     public void onError() {
                         DataManager.getInstance(mContext).getPicasso()
                                 .load(getMaxImage(item))
-                                .placeholder(mContext.getResources().getDrawable(R.drawable.camera_50))
-                                .error(mContext.getResources().getDrawable(R.drawable.camera_50))
+                                .placeholder(mContext.getResources().getDrawable(R.drawable.camera_400))
+                                .error(mContext.getResources().getDrawable(R.drawable.camera_400))
                                 .fit()
                                 .centerCrop()
                                 .into(holder.mGalleryImage, new Callback() {

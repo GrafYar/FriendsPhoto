@@ -1,38 +1,28 @@
 package ru.diasoft.friendsphoto.ui.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.diasoft.friendsphoto.R;
 import ru.diasoft.friendsphoto.managers.DataManager;
-import ru.diasoft.friendsphoto.network.resources.FriendsListRes;
 import ru.diasoft.friendsphoto.network.resources.GalleryItemRes;
 import ru.diasoft.friendsphoto.network.resources.GalleryListRes;
 import ru.diasoft.friendsphoto.network.services.RetrofitService;
-import ru.diasoft.friendsphoto.ui.activities.LoginActivity;
 import ru.diasoft.friendsphoto.ui.adapters.GalleryAdapter;
-import ru.diasoft.friendsphoto.ui.adapters.MainAdapter;
 import ru.diasoft.friendsphoto.utils.ConstantManager;
 
 /**
