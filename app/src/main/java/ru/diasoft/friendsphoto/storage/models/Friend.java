@@ -20,10 +20,8 @@ public class Friend {
     @Unique
     private int friendId;
 
-    @NotNull
     private String firstName;
 
-    @NotNull
     private String lastName;
 
     private String photo;
@@ -126,9 +124,9 @@ public class Friend {
         this.photo = friendsItemRes.getPhoto50();
     }
 
-    @Generated(hash = 387482210)
-    public Friend(Long id, int friendId, @NotNull String firstName,
-            @NotNull String lastName, String photo) {
+    @Generated(hash = 635533000)
+    public Friend(Long id, int friendId, String firstName, String lastName,
+            String photo) {
         this.id = id;
         this.friendId = friendId;
         this.firstName = firstName;

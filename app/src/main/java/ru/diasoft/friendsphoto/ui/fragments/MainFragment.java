@@ -128,7 +128,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                                     mFriendDao.insertOrReplaceInTx(allFriends);
                                     List<Friend> friendsList = new ArrayList<>();
 
-//                                    mFriendDao.deleteAll();
+
 
                                     LoadFromDBTask loadFromDBTask = new LoadFromDBTask(getActivity(), mItemClickListener);
                                     loadFromDBTask.execute();

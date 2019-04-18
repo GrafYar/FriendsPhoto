@@ -32,10 +32,8 @@ public class PinCodeActivity extends AppCompatActivity {
 
     @BindView(R.id.first_label) TextView mFirstLabel;
     @BindView(R.id.second_label) TextView mSecondLabel;
-    @BindView(R.id.third_label) TextView mThirdLabel;
     @BindView(R.id.first_value) EditText mFirstValue;
     @BindView(R.id.second_value) EditText mSecondValue;
-    @BindView(R.id.third_value) EditText mThirdValue;
     DataManager mDataManager;
     String mPinCode;
     ValueCallback<Boolean> mValueCallback;

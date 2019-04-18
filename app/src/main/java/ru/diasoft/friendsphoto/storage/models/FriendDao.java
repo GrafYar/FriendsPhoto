@@ -47,8 +47,8 @@ public class FriendDao extends AbstractDao<Friend, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"FRIENDS\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"FRIEND_ID\" INTEGER NOT NULL UNIQUE ," + // 1: friendId
-                "\"FIRST_NAME\" TEXT NOT NULL ," + // 2: firstName
-                "\"LAST_NAME\" TEXT NOT NULL ," + // 3: lastName
+                "\"FIRST_NAME\" TEXT," + // 2: firstName
+                "\"LAST_NAME\" TEXT," + // 3: lastName
                 "\"PHOTO\" TEXT);"); // 4: photo
     }
 
@@ -67,8 +67,16 @@ public class FriendDao extends AbstractDao<Friend, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getFriendId());
-        stmt.bindString(3, entity.getFirstName());
-        stmt.bindString(4, entity.getLastName());
+ 
+        String firstName = entity.getFirstName();
+        if (firstName != null) {
+            stmt.bindString(3, firstName);
+        }
+ 
+        String lastName = entity.getLastName();
+        if (lastName != null) {
+            stmt.bindString(4, lastName);
+        }
  
         String photo = entity.getPhoto();
         if (photo != null) {
@@ -85,8 +93,16 @@ public class FriendDao extends AbstractDao<Friend, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getFriendId());
-        stmt.bindString(3, entity.getFirstName());
-        stmt.bindString(4, entity.getLastName());
+ 
+        String firstName = entity.getFirstName();
+        if (firstName != null) {
+            stmt.bindString(3, firstName);
+        }
+ 
+        String lastName = entity.getLastName();
+        if (lastName != null) {
+            stmt.bindString(4, lastName);
+        }
  
         String photo = entity.getPhoto();
         if (photo != null) {
@@ -110,8 +126,8 @@ public class FriendDao extends AbstractDao<Friend, Long> {
         Friend entity = new Friend( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getInt(offset + 1), // friendId
-            cursor.getString(offset + 2), // firstName
-            cursor.getString(offset + 3), // lastName
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // firstName
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // lastName
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // photo
         );
         return entity;
@@ -121,8 +137,8 @@ public class FriendDao extends AbstractDao<Friend, Long> {
     public void readEntity(Cursor cursor, Friend entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setFriendId(cursor.getInt(offset + 1));
-        entity.setFirstName(cursor.getString(offset + 2));
-        entity.setLastName(cursor.getString(offset + 3));
+        entity.setFirstName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setLastName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setPhoto(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
