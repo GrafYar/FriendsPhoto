@@ -100,7 +100,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
      //   mRecyclerView.setAdapter(new MainAdapter());
         String token = mDataManager.getPreferencesManager().loadUserToken();
-        String fields = "id,first_name,last_name,photo_50,online";
+        String fields = "id,first_name,last_name,photo_100,online";
 
         if(NetworkStatusChecker.isNetworkAvailable(getContext())) {
             //    Fragment fragment = new MainFragment();

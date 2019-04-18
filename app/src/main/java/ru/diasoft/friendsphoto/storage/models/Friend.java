@@ -121,7 +121,7 @@ public class Friend {
         this.friendId = friendsItemRes.getId();
         this.firstName = friendsItemRes.getFirstName();
         this.lastName = friendsItemRes.getLastName();
-        this.photo = friendsItemRes.getPhoto50();
+        this.photo = friendsItemRes.getPhoto100();
     }
 
     @Generated(hash = 635533000)
